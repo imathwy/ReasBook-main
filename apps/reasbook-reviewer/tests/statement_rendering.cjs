@@ -1,0 +1,36 @@
+// Run with Node.js; exercise the exact browser helpers without booting the app.
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const vm = require('node:vm');
+const source = fs.readFileSync(path.join(__dirname, '../docs/app.js'), 'utf8');
+const functions = ['leanMathToTex', 'statementMathHtml'].map(name => {
+  const start = source.indexOf(`  function ${name}(`);
+  const end = source.indexOf('\n  function ', start + 1);
+  assert.ok(start >= 0 && end > start);
+  return source.slice(start, end);
+}).join('\n');
+const context = vm.createContext({escapeHtml: text => String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')});
+vm.runInContext(functions, context);
+const tex = context.leanMathToTex;
+assert.equal(tex('(x^(n))_{n=m}^infty'), '(x^{n})_{n=m}^{\\infty}');
+assert.equal(tex('(x^(n_j))_{j=1}^infty'), '(x^{n_{j}})_{j=1}^{\\infty}');
+assert.equal(tex('m <= n_1 < n_2 < ...'), 'm \\le  n_{1} < n_{2} < \\ldots ');
+assert.equal(tex('π₁(S¹)'), '\\pi _{1}(S^{1})');
+assert.equal(tex('{x ∈ ℝ}'), '\\{x \\in  \\mathbb{R}\\}');
+assert.equal(tex('x^{1/2}'), 'x^{1/2}');
+assert.equal(tex('x^((n+1)/2)'), 'x^{(n+1)/2}');
+assert.equal(tex('∑ i, a i * b i'), '\\sum_{i}  a\\,i  \\cdot  b\\,i');
+assert.equal(tex('a b : Fin n → ℝ'), 'a, b : \\operatorname{Fin}\\,n \\to  \\mathbb{R}');
+assert.equal(tex('\\frac{a}{b}'), '\\frac{a}{b}');
+const html = context.statementMathHtml;
+const prose = html('The sequence\n`(x^(n))_{n=m}^infty`\nis increasing.');
+assert.equal((prose.match(/statement-line/g) || []).length, 1);
+assert.ok(!prose.includes('statement-formula'));
+assert.ok(prose.includes('^{\\infty}'));
+assert.ok(html('`x^2`\n\nAnother paragraph.').includes('statement-formula'));
+assert.ok(html('Use `fun x => x + 1`.').includes('statement-inline-code'));
+assert.ok(html('```lean\ndef f := "<img>"\n```').includes('&lt;img&gt;'));
+assert.ok(!html('<script>alert(1)</script>').includes('<script>'));
+assert.ok(!html('/-- A comment. -/').includes('/--'));
+console.log('Statement rendering regression passed');

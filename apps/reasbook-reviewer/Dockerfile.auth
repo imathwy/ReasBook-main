@@ -1,0 +1,6 @@
+# Pass a directory containing a prebuilt trusted ReasLab auth wheel via
+# --build-context auth_wheels=/absolute/path/to/wheels. No checkout/secrets copied.
+ARG REVIEWER_BASE_IMAGE=reasbook-reviewer:local
+FROM ${REVIEWER_BASE_IMAGE}
+COPY --from=auth_wheels /*.whl /tmp/auth-wheels/
+RUN python -m pip install --no-cache-dir /tmp/auth-wheels/*.whl

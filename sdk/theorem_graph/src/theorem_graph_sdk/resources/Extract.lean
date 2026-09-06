@@ -7,6 +7,8 @@ open Lean Core
 structure ProjectSpec where
   id : String
   rootModule : String
+  /-- Optional isolated batch of already compiled modules; no aggregate compilation. -/
+  rootModules : Array String := #[]
   deriving FromJson
 
 /-- Input accepted by the theorem-map environment extractor. -/
@@ -21,6 +23,11 @@ structure RawDeclaration where
   line : Nat
   kind : String
   docString : String
+  /-- Constants referenced by the declaration's proposition or result type. -/
+  statementDependencies : Array String
+  /-- Constants referenced by a theorem proof or a definition's body. -/
+  proofDependencies : Array String
+  /-- Backward-compatible union of statement and proof/body dependencies. -/
   dependencies : Array String
   deriving ToJson
 
@@ -51,15 +58,30 @@ private def moduleOf? (env : Environment) (declName : Name) : Option Name := do
   let moduleIdx ← env.const2ModIdx[declName]?
   env.allImportedModuleNames[moduleIdx.toNat]?
 
-/-- Direct constant dependencies that stay inside one ReasBook project. -/
+/-- Direct constant names that stay inside one ReasBook project. -/
 private def projectDependencyNames (env : Environment) (projectId : String)
-    (info : ConstantInfo) : Array String :=
-  info.getUsedConstantsAsSet.toArray.filterMap fun name => do
+    (names : NameSet) : Array String :=
+  names.toArray.filterMap fun name => do
     let moduleName ← moduleOf? env name
     if moduleBelongsTo projectId moduleName then
       some name.toString
     else
       none
+
+/-- Constants used by the proof/value side of a declaration.
+
+For theorem-like declarations this is the proof term.  For definitions it is
+the implementation body.  The structural cases mirror
+`ConstantInfo.getUsedConstantsAsSet`, without mixing in `info.type`.
+-/
+private def proofUsedConstants (info : ConstantInfo) : NameSet :=
+  match info.value? (allowOpaque := true) with
+  | some value => value.getUsedConstantsAsSet
+  | none => match info with
+    | .inductInfo value => .ofList value.ctors
+    | .ctorInfo value => ({} : NameSet).insert value.name
+    | .recInfo value => .ofList value.all
+    | _ => {}
 
 /-- Convert one environment constant to exported metadata when it belongs to a project. -/
 private def extractDeclaration? (env : Environment) (spec : ProjectSpec)
@@ -71,13 +93,21 @@ private def extractDeclaration? (env : Environment) (spec : ProjectSpec)
   let docString := (← findDocString? env name (includeBuiltin := false)).getD ""
   let ranges? ← findDeclarationRanges? name
   let line := ranges?.map (·.range.pos.line) |>.getD 1
+  let statementDependencies :=
+    projectDependencyNames env spec.id info.type.getUsedConstantsAsSet
+  let proofDependencies :=
+    projectDependencyNames env spec.id (proofUsedConstants info)
+  let dependencies :=
+    projectDependencyNames env spec.id info.getUsedConstantsAsSet
   return some {
     name := name.toString
     moduleName := moduleName.toString
     line
     kind := declarationKind info
     docString
-    dependencies := projectDependencyNames env spec.id info
+    statementDependencies
+    proofDependencies
+    dependencies
   }
 
 /-- Extract every imported and locally added declaration for one project. -/
@@ -92,11 +122,17 @@ private def extractProjectCore (spec : ProjectSpec) : CoreM (Array RawDeclaratio
       declarations := declarations.push declaration
   return declarations
 
-/-- Import all project roots once and extract each project from the shared environment. -/
+/-- Import the requested project roots and extract each project from the environment.
+
+The Python SDK intentionally invokes this program with exactly one project per
+process.  Keeping an array in the wire format preserves compatibility with the
+original extractor while the process boundary keeps independent projects from
+sharing one unbounded Lean environment.
+-/
 private unsafe def extractProjects (specs : Array ProjectSpec) : IO (Array RawProject) := do
-  let imports : Array Import := specs.map fun spec => {
-    module := spec.rootModule.toName
-  }
+  let imports : Array Import := specs.flatMap fun spec =>
+    let roots := if spec.rootModules.isEmpty then #[spec.rootModule] else spec.rootModules
+    roots.map fun root => { module := root.toName }
   IO.println s!"Importing {imports.size} theorem-map project roots"
   let env ← importModules imports {}
   let context : Core.Context := {

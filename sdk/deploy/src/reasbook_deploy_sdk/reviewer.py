@@ -183,6 +183,7 @@ def reviewer_environment(
     host: str,
     port: int,
     python_bin: str,
+    cache_root: Path | None = None,
     base: Mapping[str, str] | None = None,
 ) -> dict[str, str]:
     """Build the explicit environment passed to ``start_server.sh``."""
@@ -198,6 +199,9 @@ def reviewer_environment(
             "REASBOOK_REVIEWER_PYTHON": python_bin,
         }
     )
+    if cache_root is not None:
+        environment["REASBOOK_CACHE_ROOT"] = str(cache_root)
+        environment.setdefault("REASBOOK_REVIEWER_RELEASE_ROOT", str(cache_root / "releases"))
     return environment
 
 

@@ -29,6 +29,11 @@ __pycache__/
 *.py[cod]
 .venv/
 **/.venv/
+.python311/
+.ruff_cache/
+.pytest_cache/
+*.egg-info/
+build/
 
 # Local environments and credentials
 .env
@@ -36,6 +41,13 @@ __pycache__/
 !.env.example
 *.pem
 *.key
+*.sqlite3
+*.sqlite3-wal
+*.sqlite3-shm
+/apps/reasbook-reviewer/data
+/apps/reasbook-reviewer/review-state
+/apps/reasbook-reviewer/.runtime
+/apps/reasbook-reviewer/.qa
 
 # JavaScript tooling
 node_modules/

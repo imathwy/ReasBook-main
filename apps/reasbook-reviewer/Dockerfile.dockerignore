@@ -1,0 +1,35 @@
+# BuildKit selects this file instead of the static-site root .dockerignore.
+**
+!apps/
+!apps/reasbook-reviewer/
+!apps/reasbook-reviewer/**
+!sdk/
+!sdk/**
+!config/
+!config/**
+!ReasBook/
+!ReasBook/**
+**/.git
+**/.lake
+**/.venv
+**/.python311
+**/__pycache__
+**/*.pyc
+**/*.egg-info
+**/.env
+**/.env.*
+# sdk/build is source code, not a generated build directory.
+/build
+sdk/*/build
+apps/**/build
+**/dist
+**/data
+**/review-state
+**/node_modules
+**/.ruff_cache
+**/.pytest_cache
+**/.runtime
+**/.qa
+**/*.sqlite3
+**/*.sqlite3-*
+**/*.db

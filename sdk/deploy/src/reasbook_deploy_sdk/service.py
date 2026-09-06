@@ -566,6 +566,7 @@ def launch_reviewer(config: DeploymentConfig, python_bin: str) -> None:
         host=config.host,
         port=config.port,
         python_bin=python_bin,
+        cache_root=config.cache_root,
     )
     print(f"[deploy] starting reviewer at http://{config.host}:{config.port}/")
     os.execve(str(launcher), [str(launcher)], environment)

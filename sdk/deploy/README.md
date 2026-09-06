@@ -105,6 +105,8 @@ All generated build state is outside the source checkout by default:
   logs/      command output
   locks/     cache and publication locks
   manifests/ atomic deployment records
+  reviewer/data/ catalog, review indexes, and compatible graph caches
+  reviewer/state/ persistent SQLite review comments and audit history
   ci/        CI branch cache state (unless PERSIST_ROOT is supplied)
 ```
 
@@ -118,6 +120,12 @@ defaults to `/volume/math/users/zcwang/ReasBook_Reviewer/cache/reasbook`,
 rejects roots inside the ReasBook checkout, and refuses to reuse an unmarked
 source directory. Set `REASBOOK_CACHE_ROOT` or pass `--cache-root` when
 running on another machine or volume.
+
+The reviewer application now lives in `apps/reasbook-reviewer/` inside ReasBook.
+The default reviewer data directory is `<cache-root>/reviewer/data`; it is not
+stored beside the application source. To serve already generated evidence
+without publishing new indexes, use the application's
+[startup guide](../../apps/reasbook-reviewer/README.md).
 
 Set `--lake-bin` (or `LAKE_BIN`) when a runner exposes Lake at a non-default
 path; the Python interpreter is always checked for Python 3.11+.
@@ -382,9 +390,9 @@ from reasbook_deploy_sdk import DeploymentConfig, DeploymentPipeline, Deployment
 
 config = DeploymentConfig(
     repo_root=Path("/work/ReasBook"),
-    reviewer_root=Path("/work/Review/reasbook-reviewer"),
-    data_root=Path("/work/Review/reasbook-reviewer/data"),
-    cache_root=Path("/volume/math/users/zcwang/ReasBook_Reviewer/cache/reasbook"),
+    reviewer_root=Path("/work/ReasBook/apps/reasbook-reviewer"),
+    data_root=Path("/srv/reasbook-cache/reviewer/data"),
+    cache_root=Path("/srv/reasbook-cache"),
     books=("Analysis2_Tao_2022",),
     build=False,
 )

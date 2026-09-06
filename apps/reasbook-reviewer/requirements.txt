@@ -1,0 +1,5 @@
+# Source application dependencies. ReasBook SDK modules are loaded from ../../sdk.
+# Optional ReasLab authentication is installed separately; see README.md.
+fastapi>=0.115,<1
+uvicorn[standard]>=0.30,<1
+PyYAML>=6,<7

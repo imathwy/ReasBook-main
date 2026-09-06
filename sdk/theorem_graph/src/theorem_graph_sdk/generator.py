@@ -145,6 +145,7 @@ class GraphGenerator:
         self.project_discoverer = project_discoverer
         self.commit_reader = commit_reader
         self._source_fallback_ids: set[str] = set()
+        self._source_fallback_reasons: dict[str, str] = {}
 
     def discover(self) -> list[Project]:
         projects = self.project_discoverer(
@@ -177,6 +178,9 @@ class GraphGenerator:
             self._source_fallback_ids.update(
                 project.project_id for project in targets
             )
+            self._source_fallback_reasons.update(
+                {project.project_id: "source-only" for project in targets}
+            )
         elif extractor is None:
             if self.config.extractor is not None:
                 extractor = LeanEnvironmentExtractor(
@@ -186,30 +190,75 @@ class GraphGenerator:
                 )
             else:
                 extractor = SourceExtractor()
-        try:
-            extracted = dict(extractor.extract(self.config.repo_root, targets))
-        except ExtractionError:
-            if not self.config.fallback_to_source or isinstance(
-                extractor, SourceExtractor
-            ):
-                raise
+        extracted: dict[str, list[dict[str, Any]]]
+        if isinstance(extractor, LeanEnvironmentExtractor):
             extracted = {}
-            self._source_fallback_ids.update(project.project_id for project in targets)
+            for project in targets:
+                if not project.root_module:
+                    self._source_fallback_reasons[project.project_id] = (
+                        "compiled-root-unavailable"
+                    )
+                    continue
+                try:
+                    project_result = extractor.extract_project(
+                        self.config.repo_root, project
+                    )
+                except ExtractionError:
+                    if not self.config.fallback_to_source:
+                        raise
+                    self._source_fallback_ids.add(project.project_id)
+                    self._source_fallback_reasons[project.project_id] = (
+                        "compiled-extraction-failed"
+                    )
+                    continue
+                declarations = project_result.get(project.project_id)
+                if declarations is not None:
+                    extracted[project.project_id] = declarations
+        else:
+            try:
+                extracted = dict(extractor.extract(self.config.repo_root, targets))
+            except ExtractionError:
+                if not self.config.fallback_to_source or isinstance(
+                    extractor, SourceExtractor
+                ):
+                    raise
+                extracted = {}
+                self._source_fallback_ids.update(
+                    project.project_id for project in targets
+                )
+                self._source_fallback_reasons.update(
+                    {
+                        project.project_id: "compiled-extraction-failed"
+                        for project in targets
+                    }
+                )
+        missing = [
+            project for project in targets if project.project_id not in extracted
+        ]
+        if missing and not self.config.fallback_to_source:
+            project_ids = ", ".join(project.project_id for project in missing)
+            raise ExtractionError(
+                f"compiled extraction returned no data for: {project_ids}"
+            )
         if self.config.fallback_to_source:
-            missing = [
-                project for project in targets if project.project_id not in extracted
-            ]
             if missing:
                 fallback = SourceExtractor().extract(self.config.repo_root, missing)
                 for project in missing:
                     extracted[project.project_id] = fallback.get(project.project_id, [])
                     self._source_fallback_ids.add(project.project_id)
+                    self._source_fallback_reasons.setdefault(
+                        project.project_id,
+                        "compiled-result-missing"
+                        if project.root_module
+                        else "compiled-root-unavailable",
+                    )
         return extracted
 
     def _render_tree(
         self,
         projects: Sequence[Project],
         raw_by_project: Mapping[str, list[dict[str, Any]]],
+        source_inventory_by_project: Mapping[str, list[dict[str, Any]]],
         destination: Path,
     ) -> list[dict[str, Any]]:
         commit = self.config.commit
@@ -258,7 +307,15 @@ class GraphGenerator:
                     repository=self.config.repository,
                     branch=self.config.branch,
                     commit=commit,
+                    source_inventory_raw=source_inventory_by_project.get(
+                        project.project_id
+                    ),
                 )
+                fallback_reason = self._source_fallback_reasons.get(project.project_id)
+                if fallback_reason:
+                    generation = dict(data.get("generation") or {})
+                    generation["fallbackReason"] = fallback_reason
+                    data["generation"] = generation
                 if self.config.assets is None:
                     raise GraphRenderError(
                         "assets are required when generating a generic theorem map"
@@ -340,6 +397,7 @@ class GraphGenerator:
         """Generate all configured maps and atomically replace theorem-maps/."""
 
         self._source_fallback_ids.clear()
+        self._source_fallback_reasons.clear()
         projects = self.discover()
         self.config.site_root.mkdir(parents=True, exist_ok=True)
         parent = self.config.site_root
@@ -348,7 +406,25 @@ class GraphGenerator:
         staged_maps.mkdir(parents=True, exist_ok=True)
         try:
             raw_by_project = self._extract(projects)
-            entries = self._render_tree(projects, raw_by_project, staged_maps)
+            generic = generic_projects(list(projects), self.config.include_generic)
+            compiled_projects = [
+                project
+                for project in generic
+                if project.root_module
+                and project.project_id in raw_by_project
+                and project.project_id not in self._source_fallback_ids
+            ]
+            source_inventory_by_project = (
+                SourceExtractor().extract(self.config.repo_root, compiled_projects)
+                if compiled_projects
+                else {}
+            )
+            entries = self._render_tree(
+                projects,
+                raw_by_project,
+                source_inventory_by_project,
+                staged_maps,
+            )
             # Branch artifacts retain the historical four-column catalog;
             # the post-merge catalog renderer adds the branch column.
             write_catalog(temporary, entries, include_branch=False)

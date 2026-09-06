@@ -24,9 +24,12 @@
     currentTitle: document.getElementById("currentTitle"),
     fullGraphButton: document.getElementById("fullGraphButton"),
     focusGraphButton: document.getElementById("focusGraphButton"),
+    graphDepthSelect: document.getElementById("graphDepthSelect"),
     zoomOutButton: document.getElementById("zoomOutButton"),
     fitButton: document.getElementById("fitButton"),
     zoomInButton: document.getElementById("zoomInButton"),
+    graphZoomSlider: document.getElementById("graphZoomSlider"),
+    graphZoomValue: document.getElementById("graphZoomValue"),
     mobileGraphButton: document.getElementById("mobileGraphButton"),
     mobileDetailButton: document.getElementById("mobileDetailButton"),
     workspace: document.getElementById("workspace"),
@@ -51,7 +54,14 @@
   var preferencePrefix = "reasbook-theorem-map";
   var state = {
     selectedId: "",
-    graphMode: "full",
+    graphMode: "focus",
+    graphDepth: 3,
+    dependencyMode: "all",
+    layoutMode: "natural",
+    graphviz: null,
+    graphvizPromise: null,
+    vizScriptPromise: null,
+    renderToken: 0,
     sidebarCollapsed: false,
     detailCollapsed: false,
     mobileView: "graph",
@@ -110,36 +120,61 @@
     return (orderById.get(leftId) || 0) - (orderById.get(rightId) || 0);
   }
 
-  function ancestorsOf(startId) {
+  function directionalNeighborhood(startId, neighbors, maxDepth, allowedIds) {
+    // Breadth-first traversal gives shortest hop distance even with cycles.
+    // Traverse each direction separately: sharing a prerequisite does not make
+    // a sibling declaration part of the selected declaration's neighborhood.
     var result = new Set();
-    var start = itemById.get(startId);
-    var stack = start ? start.dependencies.slice() : [];
-    while (stack.length) {
-      var current = stack.pop();
-      if (result.has(current)) {
-        continue;
-      }
-      result.add(current);
-      var item = itemById.get(current);
-      if (item) {
-        item.dependencies.forEach(function (id) { stack.push(id); });
-      }
+    var visited = new Set([startId]);
+    var frontier = [startId];
+    var limit = maxDepth === undefined ? Infinity : maxDepth;
+    for (var depth = 0; frontier.length && depth < limit; depth += 1) {
+      var next = [];
+      frontier.forEach(function (id) {
+        neighbors(id).forEach(function (neighbor) {
+          if (visited.has(neighbor) || !itemById.has(neighbor) ||
+              (allowedIds && !allowedIds.has(neighbor))) return;
+          visited.add(neighbor);
+          result.add(neighbor);
+          next.push(neighbor);
+        });
+      });
+      frontier = next;
     }
     return result;
   }
 
-  function descendantsOf(startId) {
-    var result = new Set();
-    var stack = (consumersById.get(startId) || []).slice();
-    while (stack.length) {
-      var current = stack.pop();
-      if (result.has(current)) {
-        continue;
-      }
-      result.add(current);
-      (consumersById.get(current) || []).forEach(function (id) { stack.push(id); });
-    }
-    return result;
+  function ancestorsOf(startId, maxDepth, allowedIds, mode) {
+    return directionalNeighborhood(startId, function (id) {
+      var item = itemById.get(id);
+      return item ? graphTraversalDependencies(item, mode) : [];
+    }, maxDepth, allowedIds);
+  }
+
+  function descendantsOf(startId, maxDepth, allowedIds, mode) {
+    return directionalNeighborhood(startId, function (id) {
+      return graphConsumers(id, true, mode);
+    }, maxDepth, allowedIds);
+  }
+
+  function graphDependencies(item, mode) {
+    mode = mode || state.dependencyMode;
+    if (mode === "statement" || mode === "statement-edges") return item.statementDependencies || [];
+    if (mode === "proof") return item.proofDependencies || [];
+    if (mode === "union") return Array.from(new Set((item.statementDependencies || []).concat(item.proofDependencies || [])));
+    return item.dependencies;
+  }
+
+  function graphTraversalDependencies(item, mode) {
+    mode = mode || state.dependencyMode;
+    return graphDependencies(item, mode === "statement-edges" ? "union" : mode);
+  }
+
+  function graphConsumers(id, traversal, mode) {
+    return (consumersById.get(id) || []).filter(function (consumer) {
+      var dependencies = traversal ? graphTraversalDependencies(itemById.get(consumer), mode) : graphDependencies(itemById.get(consumer), mode);
+      return dependencies.indexOf(id) >= 0;
+    });
   }
 
   function encodePath(path) {
@@ -188,6 +223,27 @@
 
   function renderLegend() {
     var fragment = document.createDocumentFragment();
+    [
+      ["Statement edge", "statement"],
+      ["Proof/body edge", "proof"],
+      ["Both", "both"],
+      [data.generation && /^curated/.test(data.generation.mode || "") ? "Curated" : "Legacy", "unclassified"]
+    ].forEach(function (entry) {
+      var edgeEntry = document.createElement("span");
+      var line = document.createElement("i");
+      line.className = "legend-edge legend-edge-" + entry[1];
+      edgeEntry.appendChild(line);
+      edgeEntry.appendChild(document.createTextNode(entry[0]));
+      fragment.appendChild(edgeEntry);
+    });
+    if (items.some(function (item) { return item.dependencyEvidence === "source-only"; })) {
+      var sourceEntry = document.createElement("span");
+      var sourceSwatch = document.createElement("i");
+      sourceSwatch.className = "legend-source-only";
+      sourceEntry.appendChild(sourceSwatch);
+      sourceEntry.appendChild(document.createTextNode("Source inventory only"));
+      fragment.appendChild(sourceEntry);
+    }
     sections.slice(0, 8).forEach(function (section) {
       var entry = document.createElement("span");
       var swatch = document.createElement("i");
@@ -258,6 +314,10 @@
         row.setAttribute("role", "option");
         row.setAttribute("aria-selected", String(item.id === state.selectedId));
         applySectionStyle(row, item.section);
+        if (item.dependencyEvidence === "source-only") {
+          row.classList.add("source-only");
+          row.title = "Source inventory only; compiled dependency evidence is unavailable.";
+        }
         if (item.id === state.selectedId) {
           row.classList.add("active");
         }
@@ -283,40 +343,54 @@
     refs.itemList.appendChild(fragment);
   }
 
-  function graphVisibleIds() {
+  function graphVisibleIds(mode) {
+    mode = mode || state.dependencyMode;
     var section = refs.sectionFilter.value;
     var result = new Set();
     if (state.graphMode === "focus") {
       if (state.selectedId) {
         result.add(state.selectedId);
-        ancestorsOf(state.selectedId).forEach(function (id) { result.add(id); });
-        descendantsOf(state.selectedId).forEach(function (id) { result.add(id); });
+        ancestorsOf(state.selectedId, state.graphDepth, undefined, mode).forEach(function (id) { result.add(id); });
+        descendantsOf(state.selectedId, state.graphDepth, undefined, mode).forEach(function (id) { result.add(id); });
       }
       return Array.from(result).sort(itemSort);
     }
     if (section === "all") {
-      return items.map(function (item) { return item.id; });
+      if (mode === "all") return items.map(function (item) { return item.id; });
+      // Full means all matching relationships, not unrelated isolated nodes.
+      items.forEach(function (item) {
+        graphTraversalDependencies(item, mode).forEach(function (dependency) {
+          result.add(item.id); result.add(dependency);
+        });
+      });
+      if (state.selectedId) result.add(state.selectedId);
+      return Array.from(result).sort(itemSort);
     }
     items.forEach(function (item) {
       if (item.section === section) {
         result.add(item.id);
-        ancestorsOf(item.id).forEach(function (id) { result.add(id); });
+        ancestorsOf(item.id, undefined, undefined, mode).forEach(function (id) { result.add(id); });
       }
     });
     return Array.from(result).sort(itemSort);
   }
 
-  function graphModel(ids) {
+  function graphModel(ids, mode) {
     var idSet = new Set(ids);
     var edges = [];
     ids.forEach(function (targetId) {
       var item = itemById.get(targetId);
-      item.dependencies.forEach(function (sourceId) {
+      graphDependencies(item, mode).forEach(function (sourceId) {
         if (idSet.has(sourceId)) {
+          var inStatement = item.statementDependencies.indexOf(sourceId) >= 0;
+          var inProof = item.proofDependencies.indexOf(sourceId) >= 0;
+          var kind = inStatement && inProof ? "both" :
+            (inStatement ? "statement" : (inProof ? "proof" : "unclassified"));
           edges.push({
             source: sourceId,
             target: targetId,
-            id: sourceId + "->" + targetId
+            id: sourceId + "->" + targetId,
+            kind: kind
           });
         }
       });
@@ -324,29 +398,33 @@
     return { ids: ids, edges: edges };
   }
 
-  function graphLayout(ids) {
-    var idSet = new Set(ids);
+  function graphLayoutModel(model) {
+    // Both views use one bounded reference geometry; filtering must not move nodes.
+    if (state.dependencyMode === "proof" || state.dependencyMode === "statement-edges") {
+      return graphModel(graphVisibleIds("statement-edges"), "union");
+    }
+    return model;
+  }
+
+  function graphLayout(model) {
+    var ids = model.ids;
+    var consumers = new Map(ids.map(function (id) { return [id, []]; }));
     var indegree = new Map();
     var levels = new Map();
     var queue = [];
     ids.forEach(function (id) {
-      var item = itemById.get(id);
-      var degree = item.dependencies.filter(function (dependency) {
-        return idSet.has(dependency);
-      }).length;
-      indegree.set(id, degree);
+      indegree.set(id, 0);
       levels.set(id, 0);
-      if (!degree) {
-        queue.push(id);
-      }
     });
+    model.edges.forEach(function (edge) {
+      consumers.get(edge.source).push(edge.target);
+      indegree.set(edge.target, indegree.get(edge.target) + 1);
+    });
+    ids.forEach(function (id) { if (!indegree.get(id)) queue.push(id); });
     queue.sort(itemSort);
     while (queue.length) {
       var current = queue.shift();
-      (consumersById.get(current) || []).forEach(function (consumer) {
-        if (!idSet.has(consumer)) {
-          return;
-        }
+      consumers.get(current).forEach(function (consumer) {
         levels.set(consumer, Math.max(levels.get(consumer) || 0, (levels.get(current) || 0) + 1));
         indegree.set(consumer, (indegree.get(consumer) || 1) - 1);
         if (indegree.get(consumer) === 0) {
@@ -385,6 +463,357 @@
     return { positions: positions, width: width, height: height };
   }
 
+  function escapeReviewerDot(value) {
+    return String(value)
+      .replace(/\\/g, "\\\\")
+      .replace(/"/g, '\\"')
+      .replace(/\r?\n/g, "\\n");
+  }
+
+  function reviewerGraphDomId(value) {
+    return String(value).replace(/[^a-z0-9_-]+/gi, "-");
+  }
+
+  function reviewerGraphHighlight(model) {
+    var allowedIds = new Set(model.ids);
+    var upstream = ancestorsOf(state.selectedId, undefined, allowedIds);
+    var downstream = descendantsOf(state.selectedId, undefined, allowedIds);
+    var upstreamEdges = new Set();
+    var downstreamEdges = new Set();
+    model.edges.forEach(function (edge) {
+      if (upstream.has(edge.source) &&
+          (upstream.has(edge.target) || edge.target === state.selectedId)) {
+        upstreamEdges.add(edge.id);
+      }
+      if ((edge.source === state.selectedId || downstream.has(edge.source)) &&
+          downstream.has(edge.target)) {
+        downstreamEdges.add(edge.id);
+      }
+    });
+    return {
+      upstream: upstream,
+      downstream: downstream,
+      upstreamEdges: upstreamEdges,
+      downstreamEdges: downstreamEdges
+    };
+  }
+
+  function reviewerGraphNodeStyle(item, highlight) {
+    var section = sectionMeta(item.section);
+    if (item.id === state.selectedId) {
+      return { fill: "#f7e8bf", stroke: "#a5630f", font: "#4b3210", width: 2.8 };
+    }
+    if (highlight.upstream.has(item.id)) {
+      return { fill: "#eee8f8", stroke: "#7654a6", font: "#4a3970", width: 2.2 };
+    }
+    if (highlight.downstream.has(item.id)) {
+      return { fill: "#fff0d6", stroke: "#b97819", font: "#744a10", width: 2.2 };
+    }
+    if (item.dependencyEvidence === "source-only") {
+      return { fill: "#f7f9fb", stroke: "#8b96a1", font: "#66727d", width: 1.4 };
+    }
+    if (state.selectedId) {
+      return { fill: "#f7f9fb", stroke: "#cbd4dd", font: "#8a96a1", width: 1.1 };
+    }
+    return {
+      fill: section.wash || "#e9effa",
+      stroke: section.color || "#315fb5",
+      font: "#253544",
+      width: 1.5
+    };
+  }
+
+  function reviewerGraphEdgeStyle(edge, highlight) {
+    var base = edge.kind === "statement"
+      ? { color: "#7654a6", width: 1.45, dash: "7,4" }
+      : edge.kind === "proof"
+        ? { color: "#28768a", width: 1.55, dash: "" }
+        : edge.kind === "both"
+          ? { color: "#a5630f", width: 2.05, dash: "" }
+          : { color: "#aab5bf", width: 1.35, dash: "" };
+    if (highlight.upstreamEdges.has(edge.id) || highlight.downstreamEdges.has(edge.id)) {
+      return { color: base.color, width: Math.max(2.35, base.width + 0.7), dash: base.dash, active: true };
+    }
+    if (state.selectedId) {
+      return { color: "#cbd4dd", width: 1.1, dash: base.dash, active: false };
+    }
+    return { color: base.color, width: base.width, dash: base.dash, active: false };
+  }
+
+  function buildReviewerGraphDot(model, highlight) {
+    var lines = [
+      "digraph G {",
+      '  graph [rankdir="LR", bgcolor="transparent", pad="0.25", nodesep="0.28", ranksep="0.72", outputorder="edgesfirst", splines="spline"];',
+      '  node [style="rounded,filled", fontname="Segoe UI", fontsize="10", margin="0.15,0.09"];',
+      '  edge [arrowhead="normal", arrowsize="0.7"];'
+    ];
+    model.ids.forEach(function (id) {
+      var item = itemById.get(id);
+      var style = reviewerGraphNodeStyle(item, highlight);
+      var shape = item.type === "Theorem" || item.type === "Proposition" ? "ellipse" : "box";
+      lines.push(
+        '  "' + escapeReviewerDot(id) + '" ' +
+        '[id="node-' + escapeReviewerDot(reviewerGraphDomId(id)) + '" ' +
+        'label="' + escapeReviewerDot(item.label) + '" ' +
+        'tooltip="' + escapeReviewerDot(item.label + " - " + item.title) + '" ' +
+        'shape="' + shape + '" ' +
+        'style="' + (item.dependencyEvidence === "source-only" ? "rounded,dashed,filled" : "rounded,filled") + '" ' +
+        'fillcolor="' + style.fill + '" ' +
+        'color="' + style.stroke + '" ' +
+        'fontcolor="' + style.font + '" ' +
+        'penwidth="' + style.width + '"];'
+      );
+    });
+    model.edges.slice().sort(function (left, right) {
+      return itemSort(left.source, right.source) || itemSort(left.target, right.target);
+    }).forEach(function (edge) {
+      var style = reviewerGraphEdgeStyle(edge, highlight);
+      lines.push(
+        '  "' + escapeReviewerDot(edge.source) + '" -> "' + escapeReviewerDot(edge.target) + '" ' +
+        '[id="edge-' + escapeReviewerDot(reviewerGraphDomId(edge.id)) + '" ' +
+        'color="' + style.color + '" penwidth="' + style.width + '" ' +
+        (style.dash ? 'style="dashed" ' : '') +
+        'tooltip="' + escapeReviewerDot((edge.kind || "legacy") + " dependency") + '"];'
+      );
+    });
+    lines.push("}");
+    return lines.join("\n");
+  }
+
+  function loadReviewerVizRuntime() {
+    if (window.Viz) {
+      return Promise.resolve();
+    }
+    if (!state.vizScriptPromise) {
+      state.vizScriptPromise = new Promise(function (resolve, reject) {
+        var script = document.createElement("script");
+        script.src = "./vendor/viz-global.js";
+        script.async = true;
+        script.onload = function () { resolve(); };
+        script.onerror = function () {
+          state.vizScriptPromise = null;
+          script.remove();
+          reject(new Error("Graphviz runtime could not be loaded."));
+        };
+        document.head.appendChild(script);
+      });
+    }
+    return state.vizScriptPromise;
+  }
+
+  function getReviewerGraphviz() {
+    if (state.graphviz) {
+      return Promise.resolve(state.graphviz);
+    }
+    if (!state.graphvizPromise) {
+      state.graphvizPromise = loadReviewerVizRuntime()
+        .then(function () { return window.Viz.instance(); })
+        .then(function (viz) {
+          state.graphviz = viz;
+          return viz;
+        })
+        .catch(function (error) {
+          state.graphvizPromise = null;
+          throw error;
+        });
+    }
+    return state.graphvizPromise;
+  }
+
+  function reviewerGraphSvgSize(svg) {
+    var viewBox = svg.getAttribute("viewBox");
+    if (viewBox) {
+      var values = viewBox.trim().split(/[ ,]+/).map(Number);
+      if (values.length === 4 && values.every(function (value) {
+        return Number.isFinite(value);
+      })) {
+        return { width: values[2], height: values[3] };
+      }
+    }
+    return {
+      width: parseFloat(svg.getAttribute("width")) || 800,
+      height: parseFloat(svg.getAttribute("height")) || 500
+    };
+  }
+
+  function decorateReviewerGraphvizSvg(svg, model, highlight) {
+    var visibleIds = new Set(model.ids);
+    var edgesById = new Map();
+    var edgesByDomId = new Map();
+    model.edges.forEach(function (edge) {
+      edgesById.set(edge.id, edge);
+      edgesByDomId.set("edge-" + reviewerGraphDomId(edge.id), edge);
+    });
+    svg.querySelectorAll("g.node").forEach(function (node) {
+      var title = node.querySelector("title");
+      var id = node.dataset.nodeId || (title ? title.textContent.trim() : "");
+      var item = itemById.get(id);
+      if (!item) {
+        return;
+      }
+      node.style.display = visibleIds.has(id) ? "" : "none";
+      if (!visibleIds.has(id)) {
+        delete node.dataset.nodeId;
+        node.removeAttribute("tabindex");
+        return;
+      }
+      node.dataset.nodeId = id;
+      node.setAttribute("tabindex", "0");
+      node.setAttribute("role", "button");
+      node.setAttribute("aria-label", item.label + ": " + item.title);
+      node.classList.add("graph-node");
+      node.classList.remove("selected", "upstream", "downstream", "dim", "source-only");
+      if (item.dependencyEvidence === "source-only") {
+        node.classList.add("source-only");
+      }
+      applySectionStyle(node, item.section);
+      if (id === state.selectedId) {
+        node.classList.add("selected");
+      } else if (highlight.upstream.has(id)) {
+        node.classList.add("upstream");
+      } else if (highlight.downstream.has(id)) {
+        node.classList.add("downstream");
+      } else if (state.selectedId) {
+        node.classList.add("dim");
+      }
+      var style = reviewerGraphNodeStyle(item, highlight);
+      var shape = node.querySelector("ellipse, polygon, path");
+      if (shape) {
+        shape.classList.add("node-box");
+        shape.setAttribute("fill", style.fill);
+        shape.setAttribute("stroke", style.stroke);
+        shape.setAttribute("stroke-width", String(style.width));
+      }
+      node.querySelectorAll("text").forEach(function (label) {
+        label.setAttribute("fill", style.font);
+        label.style.pointerEvents = "none";
+      });
+    });
+    svg.querySelectorAll("g.edge").forEach(function (edgeGroup) {
+      var title = edgeGroup.querySelector("title");
+      var edgeId = edgeGroup.dataset.edgeId || (title ? title.textContent.trim() : "");
+      var edge = edgesById.get(edgeId) || edgesByDomId.get(edgeGroup.id || "");
+      edgeGroup.style.display = edge ? "" : "none";
+      if (!edge) {
+        edgeGroup.classList.remove("graph-edge");
+        delete edgeGroup.dataset.edgeId;
+        return;
+      }
+      edgeGroup.dataset.edgeId = edge.id;
+      edgeGroup.dataset.dependencyKind = edge.kind;
+      edgeGroup.classList.remove(
+        "active", "dim", "dependency-statement", "dependency-proof",
+        "dependency-both", "dependency-unclassified"
+      );
+      edgeGroup.classList.add("graph-edge", "dependency-" + edge.kind);
+      edgeGroup.style.setProperty("marker-end", "none", "important");
+      var style = reviewerGraphEdgeStyle(edge, highlight);
+      if (style.active) {
+        edgeGroup.classList.add("active");
+      } else if (state.selectedId) {
+        edgeGroup.classList.add("dim");
+      }
+      var path = edgeGroup.querySelector("path");
+      if (path) {
+        path.setAttribute("fill", "none");
+        path.setAttribute("stroke", style.color);
+        path.setAttribute("stroke-width", String(style.width));
+        if (style.dash) {
+          path.setAttribute("stroke-dasharray", style.dash);
+        } else {
+          path.removeAttribute("stroke-dasharray");
+        }
+        path.style.setProperty("marker-end", "none", "important");
+      }
+      var arrow = edgeGroup.querySelector("polygon");
+      if (arrow) {
+        arrow.setAttribute("fill", style.color);
+        arrow.setAttribute("stroke", style.color);
+      }
+    });
+  }
+
+  function graphLayoutKey(model) {
+    // A relation filter can change edges while retaining exactly the same nodes.
+    return JSON.stringify([model.ids, model.edges.map(function (edge) {
+      return [edge.source, edge.target, edge.kind];
+    })]);
+  }
+
+  function renderReviewerGraphviz(ids, model, layoutModel, options) {
+    var graphKey = graphLayoutKey(layoutModel);
+    var token = ++state.renderToken;
+    var highlight = reviewerGraphHighlight(model);
+    refs.graphEmpty.hidden = Boolean(ids.length);
+    refs.graphStats.innerHTML =
+      '<span class="stat-pill">' + ids.length + '/' + items.length + ' nodes</span>' +
+      '<span class="stat-pill">' + model.edges.length + ' edges</span>';
+    if (!ids.length) {
+      refs.graphViewport.removeAttribute("aria-busy");
+      refs.graphScene.replaceChildren();
+      return;
+    }
+
+    var existing = refs.graphScene.querySelector("svg[data-reviewer-graphviz-key]");
+    if (existing && existing.dataset.reviewerGraphvizKey === graphKey) {
+      refs.graphViewport.removeAttribute("aria-busy");
+      decorateReviewerGraphvizSvg(existing, model, highlight);
+      if (!options || options.fit !== false) {
+        window.requestAnimationFrame(fitGraph);
+      } else {
+        applyTransform();
+      }
+      return;
+    }
+
+    refs.graphViewport.setAttribute("aria-busy", "true");
+    getReviewerGraphviz()
+      .then(function (viz) {
+        if (token !== state.renderToken || state.layoutMode !== "natural") {
+          return;
+        }
+        var svgText = viz.renderString(buildReviewerGraphDot(layoutModel, highlight), {
+          format: "svg",
+          engine: "dot"
+        });
+        var parsed = new DOMParser().parseFromString(svgText, "image/svg+xml");
+        var svg = parsed.documentElement;
+        if (!svg || String(svg.nodeName).toLowerCase() !== "svg") {
+          throw new Error("Graphviz returned invalid SVG.");
+        }
+        var size = reviewerGraphSvgSize(svg);
+        svg.setAttribute("width", String(size.width));
+        svg.setAttribute("height", String(size.height));
+        svg.setAttribute("role", "img");
+        svg.setAttribute("aria-label", "Theorem dependency graph");
+        svg.setAttribute("preserveAspectRatio", "xMinYMin meet");
+        svg.dataset.reviewerGraphvizKey = graphKey;
+        decorateReviewerGraphvizSvg(svg, model, highlight);
+        refs.graphScene.replaceChildren(svg);
+        state.graphWidth = size.width;
+        state.graphHeight = size.height;
+        refs.graphViewport.removeAttribute("aria-busy");
+        if (!options || options.fit !== false) {
+          window.requestAnimationFrame(fitGraph);
+        } else {
+          applyTransform();
+        }
+      })
+      .catch(function (error) {
+        if (token !== state.renderToken) {
+          return;
+        }
+        refs.graphViewport.removeAttribute("aria-busy");
+        state.layoutMode = "layered";
+        writePreference("layout-mode", state.layoutMode);
+        window.console.warn("Graphviz layout unavailable:", error);
+        renderGraph({ fit: true });
+        window.dispatchEvent(new CustomEvent("reasbook-layoutchange", {
+          detail: { mode: state.layoutMode, error: String(error) }
+        }));
+      });
+  }
+
   function edgePath(source, target) {
     var startX = source.x + NODE_WIDTH;
     var startY = source.y + NODE_HEIGHT / 2;
@@ -399,9 +828,17 @@
   function renderGraph(options) {
     var ids = graphVisibleIds();
     var model = graphModel(ids);
-    var layout = graphLayout(ids);
-    var upstream = ancestorsOf(state.selectedId);
-    var downstream = descendantsOf(state.selectedId);
+    var layoutModel = graphLayoutModel(model);
+    if (state.layoutMode === "natural") {
+      renderReviewerGraphviz(ids, model, layoutModel, options);
+      return;
+    }
+    state.renderToken += 1;
+    refs.graphViewport.removeAttribute("aria-busy");
+    var layout = graphLayout(layoutModel);
+    var allowedIds = new Set(ids);
+    var upstream = ancestorsOf(state.selectedId, undefined, allowedIds);
+    var downstream = descendantsOf(state.selectedId, undefined, allowedIds);
     var edgeLayer = svgElement("g", { class: "edge-layer" });
     var nodeLayer = svgElement("g", { class: "node-layer" });
     refs.graphEmpty.hidden = Boolean(ids.length);
@@ -413,9 +850,10 @@
         return;
       }
       var path = svgElement("path", {
-        class: "graph-edge",
+        class: "graph-edge dependency-" + edge.kind,
         d: edgePath(source, target),
-        "data-edge-id": edge.id
+        "data-edge-id": edge.id,
+        "data-dependency-kind": edge.kind
       });
       var activeUpstream = upstream.has(edge.source) &&
         (upstream.has(edge.target) || edge.target === state.selectedId);
@@ -441,6 +879,9 @@
         "data-node-id": id
       });
       applySectionStyle(node, item.section);
+      if (item.dependencyEvidence === "source-only") {
+        node.classList.add("source-only");
+      }
       if (id === state.selectedId) {
         node.classList.add("selected");
       } else if (upstream.has(id)) {
@@ -475,9 +916,8 @@
     state.graphWidth = layout.width;
     state.graphHeight = layout.height;
     refs.graphStats.innerHTML =
-      '<span class="stat-pill">' + ids.length + ' nodes</span>' +
-      '<span class="stat-pill">' + model.edges.length + ' edges</span>' +
-      '<span class="stat-pill">' + (state.graphMode === "focus" ? "neighborhood" : "full graph") + '</span>';
+      '<span class="stat-pill">' + ids.length + '/' + items.length + ' nodes</span>' +
+      '<span class="stat-pill">' + model.edges.length + ' edges</span>';
     if (!options || options.fit !== false) {
       window.requestAnimationFrame(fitGraph);
     } else {
@@ -491,6 +931,12 @@
       "translate(" + state.transform.x + " " + state.transform.y + ") " +
         "scale(" + state.transform.scale + ")"
     );
+    var percent = Math.round(state.transform.scale * 1000) / 10 + "%";
+    refs.graphZoomSlider.value = Math.round(
+      Math.log(state.transform.scale / MIN_ZOOM) / Math.log(MAX_ZOOM / MIN_ZOOM) * 1000
+    );
+    refs.graphZoomSlider.setAttribute("aria-valuetext", percent);
+    refs.graphZoomValue.textContent = percent;
   }
 
   function fitGraph() {
@@ -680,11 +1126,30 @@
     var relationSection = document.createElement("section");
     relationSection.className = "detail-section";
     var relationHeading = document.createElement("h3");
-    relationHeading.textContent = "Literature-level relations";
+    var sourceOnly = item.dependencyEvidence === "source-only";
+    relationHeading.textContent = sourceOnly
+      ? "Dependency evidence unavailable"
+      : "Literature-level relations";
     var relationGrid = document.createElement("div");
     relationGrid.className = "relation-grid";
-    relationGrid.appendChild(relationColumn("Direct dependencies", item.dependencies));
-    relationGrid.appendChild(relationColumn("Used directly by", consumersById.get(item.id) || []));
+    if (sourceOnly) {
+      var evidenceNote = document.createElement("p");
+      evidenceNote.className = "dependency-evidence-note";
+      evidenceNote.textContent = "This declaration is present in the source inventory but was not imported by the compiled project root. No dependency edges are inferred from text.";
+      relationGrid.appendChild(evidenceNote);
+    } else {
+      relationGrid.appendChild(relationColumn("Statement prerequisites", item.statementDependencies));
+      relationGrid.appendChild(relationColumn("Proof/body dependencies", item.proofDependencies));
+      var classified = new Set(item.statementDependencies.concat(item.proofDependencies));
+      var unclassified = item.dependencies.filter(function (id) { return !classified.has(id); });
+      if (unclassified.length) {
+        relationGrid.appendChild(relationColumn(
+          item.dependencyEvidence === "curated" ? "Curated dependencies" : "Legacy dependencies",
+          unclassified
+        ));
+      }
+      relationGrid.appendChild(relationColumn("Used directly by", consumersById.get(item.id) || []));
+    }
     relationSection.appendChild(relationHeading);
     relationSection.appendChild(relationGrid);
 
@@ -708,9 +1173,17 @@
   function renderHeader() {
     var item = selectedItem();
     refs.currentLabel.textContent = item ? item.label : "Theorem map";
+    refs.currentLabel.title = refs.currentLabel.textContent;
     refs.currentTitle.textContent = item ? item.title : project.title;
     refs.fullGraphButton.classList.toggle("active", state.graphMode === "full");
     refs.focusGraphButton.classList.toggle("active", state.graphMode === "focus");
+    refs.fullGraphButton.setAttribute("aria-pressed", String(state.graphMode === "full"));
+    refs.focusGraphButton.setAttribute("aria-pressed", String(state.graphMode === "focus"));
+    refs.graphDepthSelect.value = String(state.graphDepth);
+    refs.graphDepthSelect.disabled = state.graphMode === "full";
+    refs.graphDepthSelect.title = state.graphMode === "full"
+      ? "Full graph includes all matching relationships. Switch to Neighborhood to limit layers."
+      : "Up to " + state.graphDepth + " dependency hops in each direction";
   }
 
   function selectItem(id, options) {
@@ -724,7 +1197,7 @@
     renderHeader();
     renderList();
     renderDetail();
-    renderGraph({ fit: false });
+    renderGraph({ fit: state.graphMode === "focus" });
     if (options && options.mobileDetail && window.innerWidth <= 820) {
       setMobileView("detail");
     }
@@ -732,7 +1205,7 @@
 
   function setGraphMode(mode) {
     state.graphMode = mode === "focus" ? "focus" : "full";
-    writePreference("graph-mode", state.graphMode);
+    writePreference("graph-mode-v2", state.graphMode);
     renderHeader();
     renderGraph({ fit: true });
   }
@@ -803,9 +1276,21 @@
     });
     refs.fullGraphButton.addEventListener("click", function () { setGraphMode("full"); });
     refs.focusGraphButton.addEventListener("click", function () { setGraphMode("focus"); });
+    refs.graphDepthSelect.addEventListener("change", function () {
+      var depth = Number(refs.graphDepthSelect.value);
+      state.graphDepth = [1, 2, 3, 4, 5, 8].indexOf(depth) >= 0 ? depth : 3;
+      writePreference("graph-depth", String(state.graphDepth));
+      renderHeader();
+      renderGraph({ fit: true });
+    });
     refs.zoomOutButton.addEventListener("click", function () { zoomAt(0.82); });
     refs.zoomInButton.addEventListener("click", function () { zoomAt(1.22); });
     refs.fitButton.addEventListener("click", fitGraph);
+    refs.graphZoomSlider.addEventListener("input", function () {
+      // Logarithmic travel keeps small zoom levels usable for large graphs.
+      var scale = MIN_ZOOM * Math.pow(MAX_ZOOM / MIN_ZOOM, Number(refs.graphZoomSlider.value) / 1000);
+      zoomAt(scale / state.transform.scale);
+    });
     refs.mobileGraphButton.addEventListener("click", function () { setMobileView("graph"); });
     refs.mobileDetailButton.addEventListener("click", function () { setMobileView("detail"); });
     refs.dependencyGraph.addEventListener("click", function (event) {
@@ -881,15 +1366,30 @@
   }
 
   function validateAndLoad(payload) {
-    if (!payload || payload.schemaVersion !== 1 || !payload.project || !Array.isArray(payload.items)) {
-      throw new Error("data.json does not match theorem-map schema version 1.");
+    if (!payload || (payload.schemaVersion !== 1 && payload.schemaVersion !== 2) ||
+        !payload.project || !Array.isArray(payload.items)) {
+      throw new Error("data.json does not match theorem-map schema version 1 or 2.");
     }
     data = payload;
     project = data.project;
     preferencePrefix += ":" + String(project.id || "project");
     items = data.items.map(function (item) {
+      var statementDependencies = Array.isArray(item.statementDependencies)
+        ? item.statementDependencies.slice() : [];
+      var proofDependencies = Array.isArray(item.proofDependencies)
+        ? item.proofDependencies.slice() : [];
+      var dependencies = Array.isArray(item.dependencies)
+        ? item.dependencies.slice()
+        : statementDependencies.concat(proofDependencies).filter(function (id, index, values) {
+          return values.indexOf(id) === index;
+        });
       return Object.assign({}, item, {
-        dependencies: Array.isArray(item.dependencies) ? item.dependencies.slice() : []
+        statementDependencies: statementDependencies,
+        proofDependencies: proofDependencies,
+        dependencies: dependencies,
+        dependencyEvidence: item.dependencyEvidence === "source-only" ||
+          (!item.dependencyEvidence && data.generation && data.generation.mode === "source-fallback")
+          ? "source-only" : item.dependencyEvidence === "curated" ? "curated" : "compiled"
       });
     });
     sections = Array.isArray(data.sections) ? data.sections.slice() : [];
@@ -914,6 +1414,12 @@
       item.dependencies = item.dependencies.filter(function (dependency) {
         return itemById.has(dependency) && dependency !== item.id;
       });
+      item.statementDependencies = item.statementDependencies.filter(function (dependency) {
+        return itemById.has(dependency) && dependency !== item.id;
+      });
+      item.proofDependencies = item.proofDependencies.filter(function (dependency) {
+        return itemById.has(dependency) && dependency !== item.id;
+      });
       item.dependencies.forEach(function (dependency) {
         consumersById.get(dependency).push(item.id);
       });
@@ -933,9 +1439,17 @@
     renderLegend();
     var hashId = decodeURIComponent(window.location.hash.replace(/^#/, ""));
     state.selectedId = itemById.has(hashId) ? hashId : (items[0] ? items[0].id : "");
-    var savedMode = readPreference("graph-mode");
-    state.graphMode = savedMode === "focus" || (items.length > 320 && savedMode !== "full")
-      ? "focus" : "full";
+    var savedLayout = readPreference("layout-mode");
+    state.layoutMode = savedLayout === "layered" ? "layered" : "natural";
+    window.dispatchEvent(new CustomEvent("reasbook-layoutchange", {
+      detail: { mode: state.layoutMode }
+    }));
+    // v1 defaulted to full and persisted it automatically. Do not migrate that
+    // incidental value into the bounded default; explicit v2 choices persist.
+    var savedMode = readPreference("graph-mode-v2");
+    state.graphMode = savedMode === "full" ? "full" : "focus";
+    var savedDepth = Number(readPreference("graph-depth"));
+    state.graphDepth = [1, 2, 3, 4, 5, 8].indexOf(savedDepth) >= 0 ? savedDepth : 3;
     state.sidebarCollapsed = readPreference("sidebar-collapsed") === "true";
     state.detailCollapsed = readPreference("detail-collapsed") === "true";
     setSidebarCollapsed(state.sidebarCollapsed);
@@ -947,6 +1461,34 @@
     renderDetail();
     renderGraph({ fit: true });
   }
+
+  window.__reasbookTheoremMapLayout = {
+    getMode: function () {
+      return state.layoutMode;
+    },
+    setMode: function (mode) {
+      state.layoutMode = mode === "natural" ? "natural" : "layered";
+      writePreference("layout-mode", state.layoutMode);
+      if (data) {
+        renderGraph({ fit: true });
+      }
+      window.dispatchEvent(new CustomEvent("reasbook-layoutchange", {
+        detail: { mode: state.layoutMode }
+      }));
+    }
+  };
+
+  window.__reasbookTheoremMapDependencies = {
+    getMode: function () { return state.dependencyMode; },
+    setMode: function (mode) {
+      var next = ["statement", "proof", "statement-edges"].indexOf(mode) >= 0 ? mode : "all";
+      if (next === state.dependencyMode) return;
+      var sharedLayout = ["proof", "statement-edges"];
+      var preserveCamera = sharedLayout.indexOf(next) >= 0 && sharedLayout.indexOf(state.dependencyMode) >= 0;
+      state.dependencyMode = next;
+      if (data) renderGraph({ fit: !preserveCamera });
+    }
+  };
 
   fetch("./data.json", { cache: "no-cache" })
     .then(function (response) {

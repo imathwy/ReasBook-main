@@ -10,7 +10,11 @@ requested="${REASBOOK_PYTHON_BIN:-${PYTHON_BIN:-}}"
 if [[ -n "$requested" ]]; then
   candidates=("$requested")
 else
+  CACHE_ROOT="${REASBOOK_CACHE_ROOT:-/volume/math/users/zcwang/ReasBook_Reviewer/cache/reasbook}"
   candidates=(
+    "$REPO_ROOT/apps/reasbook-reviewer/.venv/bin/python"
+    "$REPO_ROOT/apps/reasbook-reviewer/.python311/bin/python"
+    "$CACHE_ROOT/reviewer/python311/bin/python"
     "$WORKSPACE_ROOT/Review/reasbook-reviewer/.python311/bin/python"
     "$WORKSPACE_ROOT/Review/reasbook-reviewer/.venv/bin/python"
     "$WORKSPACE_ROOT/.python311/bin/python"

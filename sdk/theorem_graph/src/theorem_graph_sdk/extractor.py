@@ -52,6 +52,10 @@ class LeanEnvironmentExtractor:
     result. A custom runner may be injected for tests or another process
     supervisor. It may implement the shared ``run(Command)`` contract or the
     familiar ``subprocess.run``-compatible callable shape.
+
+    Projects are deliberately exported one at a time. Each project therefore
+    gets a fresh Lean process and environment instead of accumulating every
+    book in one high-memory import.
     """
 
     def __init__(
@@ -87,16 +91,26 @@ class LeanEnvironmentExtractor:
     def extract(
         self, repo_root: Path, projects: Sequence[Project]
     ) -> Mapping[str, list[dict[str, Any]]]:
+        """Export projects serially, with one Lean process per project."""
+
+        extracted: dict[str, list[dict[str, Any]]] = {}
+        for project in projects:
+            if not project.root_module:
+                continue
+            extracted.update(self.extract_project(repo_root, project))
+        return extracted
+
+    def extract_project(
+        self, repo_root: Path, project: Project
+    ) -> Mapping[str, list[dict[str, Any]]]:
+        """Export exactly one compiled project in an isolated Lean process."""
+
         if not self.extractor.is_file():
             raise ExtractionError(f"Lean extractor does not exist: {self.extractor}")
-        exportable = [project for project in projects if project.root_module]
-        if not exportable:
+        if not project.root_module:
             return {}
         config = {
-            "projects": [
-                {"id": project.project_id, "rootModule": project.root_module}
-                for project in exportable
-            ]
+            "projects": [{"id": project.project_id, "rootModule": project.root_module}]
         }
         repo_root = Path(repo_root).expanduser().resolve()
         working_dir = repo_root / "ReasBook"
@@ -124,7 +138,9 @@ class LeanEnvironmentExtractor:
                         if hasattr(self.runner, "run"):
                             result = self.runner.run(  # type: ignore[attr-defined]
                                 SharedCommand(
-                                    command, cwd=working_dir, timeout=self.timeout_seconds
+                                    command,
+                                    cwd=working_dir,
+                                    timeout=self.timeout_seconds,
                                 )
                             )
                         else:

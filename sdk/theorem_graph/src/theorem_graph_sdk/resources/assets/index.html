@@ -51,14 +51,27 @@
     <main class="main-panel">
       <header class="toolbar">
         <div class="toolbar-title">
-          <div class="current-label" id="currentLabel">Theorem map</div>
           <div class="current-title" id="currentTitle">Loading project data</div>
         </div>
         <div class="toolbar-actions">
+          <div class="graph-scope-heading">
+          <div class="current-label graph-selection-label" id="currentLabel" aria-live="polite">Theorem map</div>
           <div class="segmented" role="group" aria-label="Graph scope">
-            <button id="fullGraphButton" class="active" type="button">Full graph</button>
-            <button id="focusGraphButton" type="button">Neighborhood</button>
+            <button id="fullGraphButton" type="button" title="Show every node; large graphs may take longer to lay out">Full graph</button>
+            <button id="focusGraphButton" class="active" type="button">Neighborhood</button>
           </div>
+          </div>
+          <label class="graph-depth-control" title="Maximum dependency hops upstream and downstream from the selected node">
+            <span>Layers</span>
+            <select id="graphDepthSelect" aria-label="Neighborhood layers">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3" selected>3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="8">8</option>
+            </select>
+          </label>
           <div class="zoom-controls" role="group" aria-label="Graph zoom">
             <button class="icon-button" id="zoomOutButton" type="button"
               title="Zoom out" aria-label="Zoom out">-</button>
@@ -97,6 +110,12 @@
               <g id="graphScene"></g>
             </svg>
             <div class="graph-empty" id="graphEmpty" hidden>No graph items match this view.</div>
+          </div>
+          <div class="graph-zoom-bar">
+            <label for="graphZoomSlider">Zoom</label>
+            <input id="graphZoomSlider" type="range" min="0" max="1000" step="1"
+              value="676" aria-valuetext="100%" title="Zoom graph">
+            <output id="graphZoomValue" for="graphZoomSlider">100%</output>
           </div>
         </section>
 

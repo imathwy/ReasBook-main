@@ -139,7 +139,7 @@ def build_parser(repo_root: Path | None = None) -> argparse.ArgumentParser:
     parser.add_argument("--book", action="append", dest="books", help="book ID or slug; repeat for at most two books")
     parser.add_argument("--branch", help="version branch applied to every selected book")
     parser.add_argument("--cache-root", type=Path, default=default_cache_root())
-    parser.add_argument("--reviewer-root", type=Path, default=workspace / "Review" / "reasbook-reviewer")
+    parser.add_argument("--reviewer-root", type=Path, default=root / "apps" / "reasbook-reviewer")
     parser.add_argument("--reviewer-data", type=Path)
     parser.add_argument("--stacks-root", type=Path, default=workspace / "Review" / "stacks-proof-module-migration")
     parser.add_argument("--no-stacks", action="store_true")
@@ -176,17 +176,15 @@ def _deployment_config(args: argparse.Namespace) -> DeploymentConfig:
         raise DeployError("REASBOOK_REVIEWER_PORT must be an integer") from None
     if args.branch and not re.fullmatch(r"v\d+\.\d+\.\d+", args.branch):
         raise DeployError("--branch must look like vX.Y.Z")
-    data_root = (
-        resolve_path(args.reviewer_data, workspace)
-        if args.reviewer_data
-        else reviewer_root / "data"
-    )
+    cache_root = resolve_path(args.cache_root, workspace)
+    configured_data = args.reviewer_data or os.environ.get("REASBOOK_REVIEWER_DATA") or reviewer_env.get("REASBOOK_REVIEWER_DATA")
+    data_root = resolve_path(configured_data, workspace) if configured_data else cache_root / "reviewer" / "data"
     stacks_root = None if args.no_stacks else resolve_path(args.stacks_root, workspace)
     return DeploymentConfig(
         repo_root=repo_root,
         reviewer_root=reviewer_root,
         data_root=data_root,
-        cache_root=resolve_path(args.cache_root, workspace),
+        cache_root=cache_root,
         books=tuple(args.books or ()),
         branch=args.branch,
         stacks_root=stacks_root,

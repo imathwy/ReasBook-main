@@ -6,6 +6,12 @@ Significant user-facing and release-engineering changes are recorded here.
 
 ### Added
 
+- Integrated ReasBook Reviewer with public book/paper reading, authenticated
+  comments, persistent review history and cache-reusing container deployment.
+- Statement/proof dependency views with bounded depth, natural layout and
+  source/docs/Verso navigation in the reader.
+- Explicit, source-bound selection of approved single-book Verso producers
+  without replacing existing Source, Docs or Graph evidence.
 - Reusable build, Verso, theorem-graph, comparator, and deployment SDKs.
 - Multi-version `ReleaseSpec` with explicit canonical project selection.
 - SiFlow branch finalizers and aggregate packaging backed by a fixed external
