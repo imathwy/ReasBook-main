@@ -23,6 +23,8 @@ theorem_graph_sdk = [
   "resources/assets/*.html",
   "resources/assets/*.js",
   "resources/assets/*.css",
+  "resources/assets/vendor/*.js",
+  "resources/assets/vendor/*.txt",
 ]
 
 [tool.pytest.ini_options]

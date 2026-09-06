@@ -15,6 +15,7 @@ from .analysis import (
     contract_dependencies,
     fallback_raw_declarations,
     load_curated_manifest,
+    merge_source_inventory,
     module_relative_file,
     natural_key,
     normalize_label,
@@ -37,6 +38,7 @@ from .extractor import (
 )
 from .generator import GraphGenerator, TheoremGraphConfig, read_git_commit
 from .models import Candidate, GenerationReport, Project
+from .isolated_merge import merge_compiled_graphs
 from .projects import (
     discover_projects,
     discover_root_module,
@@ -91,6 +93,8 @@ __all__ = [
     "generic_projects",
     "has_curated_map",
     "load_curated_manifest",
+    "merge_source_inventory",
+    "merge_compiled_graphs",
     "module_relative_file",
     "natural_key",
     "normalize_label",

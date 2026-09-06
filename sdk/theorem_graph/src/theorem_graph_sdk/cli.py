@@ -76,6 +76,14 @@ def _catalog_main(argv: list[str]) -> int:
 
 def main(argv: list[str] | None = None) -> int:
     values = list(sys.argv[1:] if argv is None else argv)
+    if values and values[0] == "isolated":
+        from .isolated import main as isolated_main
+
+        try:
+            return isolated_main(values[1:])
+        except (TheoremGraphError, OSError, ValueError) as exc:
+            print(f"[theorem-graph] error: {exc}", file=sys.stderr)
+            return 2
     if values and values[0] == "catalog":
         try:
             return _catalog_main(values[1:])

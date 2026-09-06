@@ -6,11 +6,15 @@ import tempfile
 import unittest
 from contextlib import redirect_stdout
 from pathlib import Path
+from types import SimpleNamespace
 
 from theorem_graph_sdk import (
+    ExtractionError,
+    GraphConfigError,
     GraphGenerator,
     GraphRenderError,
     LABEL_RE,
+    LeanEnvironmentExtractor,
     Project,
     SourceExtractor,
     TheoremGraphConfig,
@@ -18,6 +22,7 @@ from theorem_graph_sdk import (
     contract_dependencies,
     copy_curated_map,
     generic_projects,
+    merge_source_inventory,
     normalize_label,
 )
 from theorem_graph_sdk.projects import discover_root_module
@@ -25,6 +30,37 @@ from theorem_graph_sdk.render import read_catalog_entry, write_catalog
 
 
 class TheoremGraphSdkTests(unittest.TestCase):
+    def test_chapter_prefixed_labels_preserve_real_typed_edges(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            project = Project("books", "Books", "Book", "Demo", root)
+            raw = [
+                {"name": "base", "moduleName": "Demo.Chap01.Definition_1_2_1",
+                 "kind": "definition", "docString": "Chapter01 Definition 1.2.1: base.",
+                 "statementDependencies": [], "proofDependencies": [], "dependencies": []},
+                {"name": "main", "moduleName": "Demo.Chap01.Theorem_1_2_2",
+                 "kind": "theorem", "docString": "Chapter01 Theorem 1.2.2 (1): result.",
+                 "statementDependencies": ["base"], "proofDependencies": ["base"], "dependencies": ["base"]},
+            ]
+            data = build_data(project, raw, "https://example.invalid", "v4.30.0", "abc")
+            main = next(item for item in data["items"] if item["id"] == "theorem-1-2-2")
+            self.assertEqual(main["statementDependencies"], ["definition-1-2-1"])
+            self.assertEqual(main["proofDependencies"], ["definition-1-2-1"])
+        self.assertIsNone(LABEL_RE.match("Helper for Chapter01 Theorem 1.2.2: helper."))
+        self.assertEqual(LABEL_RE.match("Chapter14 Definition 14.6-extra-1: extra.").group("number"), "14.6-extra-1")
+
+    def test_packaged_frontend_accepts_typed_dependency_schema(self) -> None:
+        from theorem_graph_sdk.generator import RESOURCE_ROOT
+
+        script = (RESOURCE_ROOT / "assets" / "app.js").read_text(encoding="utf-8")
+
+        self.assertIn("payload.schemaVersion !== 2", script)
+        self.assertIn("statementDependencies", script)
+        self.assertIn("proofDependencies", script)
+        self.assertIn("dependencyEvidence", script)
+        self.assertIn("Source inventory only", script)
+        self.assertIn('dependency-" + edge.kind', script)
+
     def test_discover_root_module_accepts_explicit_lake_root(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
@@ -126,6 +162,350 @@ class TheoremGraphSdkTests(unittest.TestCase):
                 ["lemma-2-1", "theorem-2-2"],
             )
             self.assertEqual(data["items"][1]["dependencies"], ["lemma-2-1"])
+
+    def test_build_data_preserves_statement_and_proof_dependency_origins(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            (root / "Section_2.lean").write_text("-- source", encoding="utf-8")
+            project = Project("books", "Books", "Book", "Demo", root)
+            raw = [
+                {
+                    "name": "statement_base",
+                    "moduleName": "Demo.Section_2",
+                    "line": 2,
+                    "kind": "theorem",
+                    "docString": "Lemma 2.1: statement prerequisite.",
+                    "statementDependencies": [],
+                    "proofDependencies": [],
+                    "dependencies": [],
+                },
+                {
+                    "name": "proof_base",
+                    "moduleName": "Demo.Section_2",
+                    "line": 5,
+                    "kind": "theorem",
+                    "docString": "Lemma 2.2: proof prerequisite.",
+                    "statementDependencies": [],
+                    "proofDependencies": [],
+                    "dependencies": [],
+                },
+                {
+                    "name": "statement_bridge",
+                    "moduleName": "Demo.Section_2",
+                    "line": 8,
+                    "kind": "definition",
+                    "docString": "internal statement helper",
+                    "statementDependencies": [],
+                    "proofDependencies": ["statement_base"],
+                    "dependencies": ["statement_base"],
+                },
+                {
+                    "name": "proof_bridge",
+                    "moduleName": "Demo.Section_2",
+                    "line": 11,
+                    "kind": "definition",
+                    "docString": "internal proof helper",
+                    "statementDependencies": [],
+                    "proofDependencies": ["proof_base"],
+                    "dependencies": ["proof_base"],
+                },
+                {
+                    "name": "main",
+                    "moduleName": "Demo.Section_2",
+                    "line": 14,
+                    "kind": "theorem",
+                    "docString": "Theorem 2.3: typed dependency result.",
+                    "statementDependencies": ["statement_bridge"],
+                    "proofDependencies": ["proof_bridge"],
+                    "dependencies": ["statement_bridge", "proof_bridge"],
+                },
+            ]
+
+            data = build_data(
+                project,
+                raw,
+                repository="https://example.invalid/repo",
+                branch="v4.32.2",
+                commit="abc",
+            )
+            main = next(item for item in data["items"] if item["id"] == "theorem-2-3")
+
+            self.assertEqual(data["schemaVersion"], 2)
+            self.assertEqual(main["statementDependencies"], ["lemma-2-1"])
+            self.assertEqual(main["proofDependencies"], ["lemma-2-2"])
+            self.assertEqual(main["dependencies"], ["lemma-2-1", "lemma-2-2"])
+
+    def test_build_data_overlays_compiled_edges_on_complete_source_inventory(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            (root / "Section_2.lean").write_text("-- source", encoding="utf-8")
+            project = Project(
+                "books",
+                "Books",
+                "Book",
+                "Demo",
+                root,
+                root_module="Demo.Book",
+            )
+            compiled = [
+                {
+                    "name": "Demo.common",
+                    "moduleName": "Demo.Section_2",
+                    "line": 2,
+                    "kind": "theorem",
+                    "docString": "Theorem 2.1: common result.",
+                    "statementDependencies": [],
+                    "proofDependencies": [],
+                    "dependencies": [],
+                },
+                {
+                    "name": "Demo.compiledOnly",
+                    "moduleName": "Demo.Section_2",
+                    "line": 12,
+                    "kind": "theorem",
+                    "docString": "Theorem 2.3: elaborated-only result.",
+                    "statementDependencies": ["Demo.common"],
+                    "proofDependencies": [],
+                    "dependencies": ["Demo.common"],
+                },
+            ]
+            source = [
+                {
+                    "name": "Demo.common",
+                    "moduleName": "Demo.Section_2",
+                    "line": 2,
+                    "kind": "theorem",
+                    "docString": "Theorem 2.1: common result.",
+                    "dependencies": [],
+                },
+                {
+                    "name": "Demo.sourceOnly",
+                    "moduleName": "Demo.Section_2",
+                    "line": 7,
+                    "kind": "theorem",
+                    "docString": "Theorem 2.2: source-only result.",
+                    "dependencies": [],
+                },
+            ]
+
+            data = build_data(
+                project,
+                compiled,
+                repository="https://example.invalid/repo",
+                branch="v4.30.0",
+                commit="abc",
+                source_inventory_raw=source,
+            )
+
+            self.assertEqual(
+                [item["id"] for item in data["items"]],
+                ["theorem-2-1", "theorem-2-2", "theorem-2-3"],
+            )
+            by_id = {item["id"]: item for item in data["items"]}
+            self.assertEqual(by_id["theorem-2-1"]["dependencyEvidence"], "compiled")
+            self.assertEqual(by_id["theorem-2-2"]["dependencyEvidence"], "source-only")
+            self.assertEqual(by_id["theorem-2-2"]["dependencies"], [])
+            self.assertEqual(
+                by_id["theorem-2-3"]["statementDependencies"],
+                ["theorem-2-1"],
+            )
+            self.assertEqual(
+                data["generation"],
+                {
+                    "mode": "lean-environment",
+                    "rootModule": "Demo.Book",
+                    "rawDeclarationCount": 2,
+                    "dependencyModel": "statement-and-proof-v1",
+                    "inventoryMode": "source-plus-compiled",
+                    "compiledItemCount": 2,
+                    "sourceInventoryItemCount": 2,
+                    "sourceOnlyItemCount": 1,
+                    "compiledOnlyItemCount": 1,
+                    "mergedItemCount": 3,
+                    "dependencyCoverage": "partial",
+                    "sourceRawDeclarationCount": 2,
+                },
+            )
+
+    def test_source_inventory_merge_rejects_release_identity_mismatch(self) -> None:
+        compiled = {
+            "project": {
+                "id": "Demo",
+                "kind": "books",
+                "branch": "v4.30.0",
+                "commit": "current",
+            },
+            "items": [],
+        }
+        source = {
+            "project": {
+                "id": "Demo",
+                "kind": "books",
+                "branch": "v4.30.0",
+                "commit": "stale",
+            },
+            "items": [],
+        }
+
+        with self.assertRaisesRegex(GraphConfigError, "commit mismatch"):
+            merge_source_inventory(compiled, source)
+
+    def test_empty_compiled_placeholder_has_no_dependency_coverage(self) -> None:
+        project = {
+            "id": "Placeholder",
+            "kind": "books",
+            "branch": "v4.26.0",
+            "commit": "abc",
+        }
+        compiled = {
+            "project": project,
+            "items": [],
+            "generation": {"mode": "lean-environment"},
+        }
+        source = {
+            "project": project,
+            "items": [],
+            "generation": {"mode": "source-fallback"},
+        }
+
+        merged = merge_source_inventory(compiled, source)
+
+        self.assertEqual(merged["items"], [])
+        self.assertEqual(merged["generation"]["dependencyCoverage"], "none")
+
+    def test_lean_extractor_uses_one_process_per_project(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            (root / "ReasBook").mkdir()
+            extractor_source = root / "Extract.lean"
+            extractor_source.write_text("-- test extractor", encoding="utf-8")
+            seen_projects: list[list[str]] = []
+
+            def runner(command, **_kwargs):
+                config = json.loads(Path(command[-2]).read_text(encoding="utf-8"))
+                project_specs = config["projects"]
+                seen_projects.append([item["id"] for item in project_specs])
+                Path(command[-1]).write_text(
+                    json.dumps(
+                        [
+                            {
+                                "id": project_specs[0]["id"],
+                                "declarations": [],
+                            }
+                        ]
+                    ),
+                    encoding="utf-8",
+                )
+                return SimpleNamespace(returncode=0, stderr="")
+
+            extractor = LeanEnvironmentExtractor(
+                extractor_source,
+                lake_bin="lake",
+                runner=runner,
+            )
+            projects = [
+                Project(
+                    "books",
+                    "Books",
+                    "Book",
+                    project_id,
+                    root / project_id,
+                    root_module=f"{project_id}.Book",
+                )
+                for project_id in ("Alpha", "Beta")
+            ]
+
+            extracted = extractor.extract(root, projects)
+
+            self.assertEqual(seen_projects, [["Alpha"], ["Beta"]])
+            self.assertEqual(set(extracted), {"Alpha", "Beta"})
+
+    def test_compiled_failure_falls_back_only_for_failed_project(self) -> None:
+        class PartiallyFailingExtractor(LeanEnvironmentExtractor):
+            def __init__(self) -> None:
+                self.seen: list[str] = []
+
+            def extract_project(self, _repo_root, project):
+                self.seen.append(project.project_id)
+                if project.project_id == "Bad":
+                    raise ExtractionError("deliberate test failure")
+                return {
+                    project.project_id: [
+                        {
+                            "name": "Good.result",
+                            "moduleName": "Good.Book",
+                            "line": 1,
+                            "kind": "theorem",
+                            "docString": "Theorem 1.1: compiled result.",
+                            "statementDependencies": [],
+                            "proofDependencies": [],
+                            "dependencies": [],
+                        }
+                    ]
+                }
+
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            projects = []
+            for project_id in ("Good", "Bad"):
+                project_root = root / "ReasBook" / "Books" / project_id
+                project_root.mkdir(parents=True)
+                (project_root / "Book.lean").write_text(
+                    "/-- Theorem 1.1: source result. -/\n"
+                    "theorem source_result : True := by trivial\n",
+                    encoding="utf-8",
+                )
+                projects.append(
+                    Project(
+                        "books",
+                        "Books",
+                        "Book",
+                        project_id,
+                        project_root,
+                        root_module=f"{project_id}.Book",
+                    )
+                )
+            extractor = PartiallyFailingExtractor()
+            GraphGenerator(
+                TheoremGraphConfig(
+                    repo_root=root,
+                    site_root=root / "site",
+                    branch="main",
+                    commit="abc",
+                    include_generic=True,
+                ),
+                extractor=extractor,
+                project_discoverer=lambda *_args, **_kwargs: projects,
+            ).generate()
+
+            good_data = json.loads(
+                (root / "site/theorem-maps/books/good/data.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            bad_data = json.loads(
+                (root / "site/theorem-maps/books/bad/data.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            self.assertEqual(extractor.seen, ["Good", "Bad"])
+            self.assertEqual(good_data["generation"]["mode"], "lean-environment")
+            self.assertEqual(
+                good_data["generation"]["inventoryMode"],
+                "source-plus-compiled",
+            )
+            self.assertEqual(good_data["generation"]["dependencyCoverage"], "complete")
+            self.assertEqual(good_data["items"][0]["dependencyEvidence"], "compiled")
+            self.assertNotIn("fallbackReason", good_data["generation"])
+            self.assertEqual(bad_data["generation"]["mode"], "source-fallback")
+            self.assertEqual(
+                bad_data["generation"]["fallbackReason"],
+                "compiled-extraction-failed",
+            )
 
     def test_generator_publishes_curated_and_catalog(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
@@ -336,6 +716,35 @@ class TheoremGraphSdkTests(unittest.TestCase):
                 ).read_text(encoding="utf-8")
             )
             self.assertEqual(data["generation"]["mode"], "source-fallback")
+            self.assertEqual(data["generation"]["fallbackReason"], "source-only")
+
+    def test_missing_compiled_result_fails_without_source_fallback(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            project_root = root / "ReasBook" / "Books" / "Demo"
+            project_root.mkdir(parents=True)
+            project = Project(
+                "books",
+                "Books",
+                "Book",
+                "Demo",
+                project_root,
+                root_module=None,
+            )
+
+            with self.assertRaisesRegex(
+                ExtractionError, "compiled extraction returned no data for: Demo"
+            ):
+                GraphGenerator(
+                    TheoremGraphConfig(
+                        repo_root=root,
+                        site_root=root / "site",
+                        branch="main",
+                        include_generic=True,
+                        fallback_to_source=False,
+                    ),
+                    project_discoverer=lambda *_args, **_kwargs: [project],
+                ).generate()
 
     def test_empty_run_clears_stale_output_in_replace_mode(self) -> None:
         with tempfile.TemporaryDirectory() as temp:

@@ -167,6 +167,9 @@ def copy_generic_map(assets: Path, output: Path, data: dict[str, Any]) -> None:
             if (assets / name).is_symlink():
                 raise GraphRenderError(f"theorem graph asset must not be a symlink: {assets / name}")
             shutil.copy2(assets / name, output / name)
+        vendor = assets / "vendor"
+        if vendor.is_dir():
+            shutil.copytree(vendor, output / "vendor", dirs_exist_ok=True)
     except OSError as exc:
         raise GraphRenderError(f"could not copy theorem graph assets: {exc}") from exc
     rendered_data = dict(data)

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import re
+from dataclasses import replace
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -12,9 +13,9 @@ from .models import Candidate, Project
 
 
 LABEL_RE = re.compile(
-    r"^\s*(?P<kind>Assumption|Algorithm|Definition|Lemma|Theorem|"
+    r"^\s*(?:Chapter\s*\d+\s+)?(?P<kind>Assumption|Algorithm|Definition|Lemma|Theorem|"
     r"Proposition|Corollary|Remark|Example|Exercise)\s+"
-    r"(?P<number>(?:[A-Z]\.)?\d+(?:[._-]\d+)*|[A-Z](?:\.\d+)+)",
+    r"(?P<number>(?:(?:[A-Z]\.)?\d+(?:[._-]\d+)*|[A-Z](?:\.\d+)+)(?:[-_]extra[-_]\d+)?)",
     re.IGNORECASE,
 )
 DECL_RE = re.compile(
@@ -266,6 +267,8 @@ def fallback_raw_declarations(project: Project) -> list[dict[str, Any]]:
                     "line": line,
                     "kind": match.group("kind"),
                     "docString": match.group("doc").strip(),
+                    "statementDependencies": [],
+                    "proofDependencies": [],
                     "dependencies": [],
                 }
             )
@@ -300,12 +303,33 @@ def contract_dependencies(
     declaration: str,
     raw_by_name: dict[str, dict[str, Any]],
     selected_by_name: dict[str, str],
+    dependency_field: str = "dependencies",
 ) -> list[str]:
-    """Contract helper declarations until the nearest selected items."""
+    """Contract helper declarations until the nearest selected items.
+
+    ``dependency_field`` selects the dependency class on the starting
+    declaration. Once traversal enters an unselected helper, its complete
+    dependency union is followed. This preserves whether a literature-level
+    edge originated in the statement or proof/body without losing a path that
+    crosses an implementation helper.
+    """
+
+    def values(item: dict[str, Any], field: str) -> list[Any]:
+        explicit = item.get(field)
+        if isinstance(explicit, list):
+            return explicit
+        if field == "dependencies":
+            statement = item.get("statementDependencies")
+            proof = item.get("proofDependencies")
+            return [
+                *(statement if isinstance(statement, list) else []),
+                *(proof if isinstance(proof, list) else []),
+            ]
+        return []
 
     result: set[str] = set()
     visited: set[str] = set()
-    stack = list(raw_by_name.get(declaration, {}).get("dependencies") or [])
+    stack = list(values(raw_by_name.get(declaration, {}), dependency_field))
     while stack:
         current = str(stack.pop())
         if current in visited:
@@ -317,7 +341,7 @@ def contract_dependencies(
             continue
         dependency = raw_by_name.get(current)
         if dependency:
-            stack.extend(dependency.get("dependencies") or [])
+            stack.extend(values(dependency, "dependencies"))
     return sorted(result, key=natural_key)
 
 
@@ -334,12 +358,138 @@ def load_curated_manifest(project: Project) -> dict[str, Any] | None:
     return data
 
 
+def merge_source_inventory(
+    compiled_data: dict[str, Any], source_data: dict[str, Any]
+) -> dict[str, Any]:
+    """Overlay compiled dependency evidence on the complete source inventory.
+
+    A project's aggregate root can omit labelled source files.  Compiled
+    extraction remains authoritative for every item it sees, while the source
+    pass keeps omitted literature items visible without inventing dependency
+    edges for declarations Lean did not import.
+    """
+
+    compiled_project = compiled_data.get("project")
+    source_project = source_data.get("project")
+    if not isinstance(compiled_project, dict) or not isinstance(source_project, dict):
+        raise GraphConfigError("source inventory merge requires project metadata")
+    for field in ("id", "kind", "branch", "commit"):
+        compiled_value = str(compiled_project.get(field) or "")
+        source_value = str(source_project.get(field) or "")
+        if compiled_value and source_value and compiled_value != source_value:
+            raise GraphConfigError(
+                f"source inventory project {field} mismatch: "
+                f"{compiled_value!r} != {source_value!r}"
+            )
+
+    def unique_items(payload: dict[str, Any], label: str) -> list[dict[str, Any]]:
+        raw_items = payload.get("items")
+        if not isinstance(raw_items, list):
+            raise GraphConfigError(f"{label} graph does not contain an item list")
+        items: list[dict[str, Any]] = []
+        seen: set[str] = set()
+        for value in raw_items:
+            if not isinstance(value, dict) or not value.get("id"):
+                raise GraphConfigError(f"{label} graph contains an item without an id")
+            item_id = str(value["id"])
+            if item_id in seen:
+                raise GraphConfigError(
+                    f"{label} graph contains duplicate item id {item_id!r}"
+                )
+            seen.add(item_id)
+            items.append(value)
+        return items
+
+    compiled_items = unique_items(compiled_data, "compiled")
+    source_items = unique_items(source_data, "source inventory")
+    compiled_by_id = {str(item["id"]): item for item in compiled_items}
+    source_ids = {str(item["id"]) for item in source_items}
+    merged_items: list[dict[str, Any]] = []
+    source_only_count = 0
+    for source_item in source_items:
+        item_id = str(source_item["id"])
+        compiled_item = compiled_by_id.pop(item_id, None)
+        if compiled_item is not None:
+            item = dict(compiled_item)
+            item["dependencyEvidence"] = "compiled"
+        else:
+            item = dict(source_item)
+            item["statementDependencies"] = []
+            item["proofDependencies"] = []
+            item["dependencies"] = []
+            item["dependencyEvidence"] = "source-only"
+            source_only_count += 1
+        merged_items.append(item)
+    for compiled_item in compiled_items:
+        item_id = str(compiled_item["id"])
+        if item_id not in compiled_by_id:
+            continue
+        item = dict(compiled_item)
+        item["dependencyEvidence"] = "compiled"
+        merged_items.append(item)
+
+    merged_sections: list[dict[str, Any]] = []
+    section_ids: set[str] = set()
+    for payload in (source_data, compiled_data):
+        sections = payload.get("sections")
+        if not isinstance(sections, list):
+            continue
+        for section in sections:
+            if not isinstance(section, dict) or not section.get("id"):
+                continue
+            section_id = str(section["id"])
+            if section_id in section_ids:
+                continue
+            section_ids.add(section_id)
+            merged_sections.append(dict(section))
+
+    compiled_count = len(compiled_items)
+    source_count = len(source_items)
+    compiled_only_count = sum(
+        str(item["id"]) not in source_ids for item in compiled_items
+    )
+    if not compiled_items and not source_items:
+        dependency_coverage = "none"
+    elif source_only_count == 0:
+        dependency_coverage = "complete"
+    elif compiled_count:
+        dependency_coverage = "partial"
+    else:
+        dependency_coverage = "none"
+    generation = dict(compiled_data.get("generation") or {})
+    source_generation = source_data.get("generation")
+    generation.update(
+        {
+            "inventoryMode": "source-plus-compiled",
+            "compiledItemCount": compiled_count,
+            "sourceInventoryItemCount": source_count,
+            "sourceOnlyItemCount": source_only_count,
+            "compiledOnlyItemCount": compiled_only_count,
+            "mergedItemCount": len(merged_items),
+            "dependencyCoverage": dependency_coverage,
+        }
+    )
+    if isinstance(source_generation, dict):
+        generation["sourceRawDeclarationCount"] = int(
+            source_generation.get("rawDeclarationCount") or 0
+        )
+
+    merged = dict(compiled_data)
+    merged["schemaVersion"] = 2
+    merged["sections"] = merged_sections
+    merged["items"] = merged_items
+    merged["generation"] = generation
+    return merged
+
+
 def build_data(
     project: Project,
     raw_declarations: list[dict[str, Any]],
     repository: str,
     branch: str,
     commit: str,
+    *,
+    source_inventory_raw: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     """Build the stable JSON payload consumed by the graph frontend."""
 
@@ -373,7 +523,25 @@ def build_data(
         dependencies = contract_dependencies(
             candidate.declaration, raw_by_name, selected_by_name
         )
+        statement_dependencies = contract_dependencies(
+            candidate.declaration,
+            raw_by_name,
+            selected_by_name,
+            "statementDependencies",
+        )
+        proof_dependencies = contract_dependencies(
+            candidate.declaration,
+            raw_by_name,
+            selected_by_name,
+            "proofDependencies",
+        )
         dependencies = [item for item in dependencies if item != candidate.item_id]
+        statement_dependencies = [
+            item for item in statement_dependencies if item != candidate.item_id
+        ]
+        proof_dependencies = [
+            item for item in proof_dependencies if item != candidate.item_id
+        ]
         items.append(
             {
                 "id": candidate.item_id,
@@ -385,7 +553,12 @@ def build_data(
                 "line": candidate.line,
                 "declaration": candidate.declaration,
                 "statement": candidate.statement,
+                "statementDependencies": statement_dependencies,
+                "proofDependencies": proof_dependencies,
                 "dependencies": dependencies,
+                "dependencyEvidence": (
+                    "compiled" if project.root_module else "source-only"
+                ),
             }
         )
 
@@ -408,8 +581,8 @@ def build_data(
             }
         )
 
-    return {
-        "schemaVersion": 1,
+    data = {
+        "schemaVersion": 2,
         "project": {
             "id": project.project_id,
             "title": project_title(project),
@@ -425,8 +598,40 @@ def build_data(
             "mode": "lean-environment" if project.root_module else "source-fallback",
             "rootModule": project.root_module or "",
             "rawDeclarationCount": len(raw_declarations),
+            "dependencyModel": "statement-and-proof-v1",
         },
     }
+    if project.root_module and source_inventory_raw is not None:
+        source_data = build_data(
+            replace(project, root_module=None),
+            source_inventory_raw,
+            repository=repository,
+            branch=branch,
+            commit=commit,
+        )
+        return merge_source_inventory(data, source_data)
+    generation = data["generation"]
+    if project.root_module:
+        generation.update(
+            {
+                "inventoryMode": "compiled-only",
+                "compiledItemCount": len(items),
+                "sourceOnlyItemCount": 0,
+                "mergedItemCount": len(items),
+                "dependencyCoverage": "compiled-only",
+            }
+        )
+    else:
+        generation.update(
+            {
+                "inventoryMode": "source-only",
+                "sourceInventoryItemCount": len(items),
+                "sourceOnlyItemCount": len(items),
+                "mergedItemCount": len(items),
+                "dependencyCoverage": "none",
+            }
+        )
+    return data
 
 
 __all__ = [
@@ -442,6 +647,7 @@ __all__ = [
     "contract_dependencies",
     "fallback_raw_declarations",
     "load_curated_manifest",
+    "merge_source_inventory",
     "module_relative_file",
     "natural_key",
     "normalize_label",
