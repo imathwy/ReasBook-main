@@ -166,6 +166,7 @@ class PagesSiteProjector:
                 Path("versions") / "index.html",
             )
             self._write_catalog_redirects(spec, staged, canonical_routes)
+            self._write_historical_reading_redirects(spec, full_site, staged, canonical_routes)
             deduplicate_verso_assets(staged, spec.base_path)
             self._close_internal_references(
                 spec,
@@ -496,6 +497,28 @@ class PagesSiteProjector:
                 f"Pages projection is {total_bytes} bytes; budget is "
                 f"{self.max_site_bytes}"
             )
+
+    def _write_historical_reading_redirects(
+        self, spec: ReleaseSpec, source: Path, target: Path,
+        routes: dict[str, tuple[Path | None, Path | None]],
+    ) -> None:
+        # Sidebar URLs live in JavaScript, so ordinary HTML link closure does
+        # not discover every historical route. Keep all known reading indexes
+        # as tiny explicit redirects, never copy their old proof bodies.
+        for branch in spec.branches:
+            for project in spec.canonical_projects():
+                if project.branch == branch.name:
+                    continue
+                for root in (Path(project.kind) / project.slug, Path(project.slug)):
+                    relative = Path("versions") / branch.name / root
+                    for index in (source / relative).rglob("index.html"):
+                        route = index.relative_to(source)
+                        destination = target / route
+                        if destination.exists():
+                            continue
+                        canonical = self._canonical_history_target(spec, route, target, routes)
+                        if canonical is not None:
+                            self._write_history_redirect(destination, canonical, spec.base_path)
 
     def _write_catalog_redirects(
         self,

@@ -4,6 +4,10 @@
 
 Accepted
 
+## Date
+
+2026-09-07
+
 ## Context
 
 The May/Forster Pages refresh exceeded the 920 MB operational budget before

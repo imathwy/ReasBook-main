@@ -1396,6 +1396,9 @@ class ReleasePlanningTests(unittest.TestCase):
                 '{"internal":true}\n',
                 encoding="utf-8",
             )
+            sidebar_only = layout.site / "versions/v4.26.0/books/demo/sidebar-only/index.html"
+            sidebar_only.parent.mkdir(parents=True)
+            sidebar_only.write_text("<html><body>Old body not retained</body></html>")
             full_site_identity = site_tree_digest(layout.site)
 
             broken_full = root / "broken-full"
@@ -1487,6 +1490,9 @@ class ReleasePlanningTests(unittest.TestCase):
                 history_redirect,
             )
             self.assertNotIn('data-reasbook-doc-stub="true"', history_redirect)
+            sidebar_redirect = (layout.pages_site / sidebar_only.relative_to(layout.site)).read_text()
+            self.assertIn('data-reasbook-history-redirect="true"', sidebar_redirect)
+            self.assertNotIn("Old body not retained", sidebar_redirect)
             self.assertFalse((layout.pages_site / "books").exists())
             self.assertFalse((layout.pages_site / "papers").exists())
             self.assertFalse(
