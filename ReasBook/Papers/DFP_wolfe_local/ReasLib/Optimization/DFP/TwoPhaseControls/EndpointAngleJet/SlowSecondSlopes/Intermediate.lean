@@ -478,5 +478,3 @@ theorem slowIntermediateSlope_remainder :
   exact hSlope.to_isBigO
 
 end DFP.TwoLeg.EndpointAngleJet
-
-

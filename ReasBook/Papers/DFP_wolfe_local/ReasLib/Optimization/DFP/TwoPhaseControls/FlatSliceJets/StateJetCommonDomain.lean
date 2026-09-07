@@ -59,4 +59,3 @@ theorem uniformRemainderOn_via_commonDomain (B : ℝ) (hB : 0 ≤ B) :
   exact (hcommon θ hθ ε hε).1
 
 end DFP.TwoLeg.StateJet
-

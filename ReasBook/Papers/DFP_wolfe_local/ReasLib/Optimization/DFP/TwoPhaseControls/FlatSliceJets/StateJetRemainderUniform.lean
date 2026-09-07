@@ -196,5 +196,3 @@ theorem remainder_uniform_orderFive (B : ℝ) :
       DFP.TwoLeg.StateJetAssembly.weightedJointResidualJet_via_scaleStationarity θ
 
 end DFP.TwoLeg.StateJet
-
-

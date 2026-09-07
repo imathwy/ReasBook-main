@@ -507,4 +507,3 @@ theorem domainFactors_uniform_lower_bound
   exact hbound θK i ε hε
 
 end DFP.TwoLeg.StateJet
-
