@@ -33,6 +33,21 @@ lean_lib «ReasBook» where
 -- (Vogel book commented out: 57 mathlib v4.32.0 API incompatibilities;
 --  needs contributor adaptation.)
 
+/-- Reusable infrastructure for the DFP Wolfe counterexample formalization. -/
+lean_lib «DFP_wolfe_ReasLib» where
+  srcDir := "Papers/DFP_wolfe_local"
+  roots := #[`ReasLib]
+
+/-- Paper-facing modules for the DFP Wolfe counterexample formalization. -/
+lean_lib «DFP_wolfe_DFPWolfe» where
+  srcDir := "Papers/DFP_wolfe_local"
+  roots := #[`DFPWolfe]
+
+/-- The ReasBook entry point for the DFP Wolfe counterexample formalization. -/
+lean_lib «DFP_wolfe_local» where
+  srcDir := "Papers"
+  roots := #[`DFP_wolfe_local.Paper]
+
 lean_exe "literate-extract" where
   root := `LiterateExtract
   supportInterpreter := true
