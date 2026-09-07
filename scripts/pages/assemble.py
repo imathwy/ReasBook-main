@@ -42,6 +42,12 @@ _HREF_RE = re.compile(
     r"\bhref\s*=\s*(?P<quote>['\"])(?P<href>.*?)(?P=quote)",
     flags=re.IGNORECASE,
 )
+_SOURCE_DOCUMENTATION_PAIR_RE = re.compile(
+    r"(?P<documentation><a\b[^>]*>\s*API documentation\s*</a>)"
+    r"(?P<separator>\s*\)\s*\(\s*)"
+    r"(?P<source><a\b[^>]*>\s*Lean source\s*</a>)",
+    flags=re.IGNORECASE,
+)
 _UNAVAILABLE_DOCUMENTATION_MANIFEST = "unavailable-documentation.json"
 
 
@@ -274,7 +280,9 @@ def _internal_link_target(
     return candidate
 
 
-def reconcile_documentation_links(site_root: Path) -> dict[str, object]:
+def reconcile_documentation_links(
+    site_root: Path, *, verified_source_links: dict[str, str] | None = None,
+) -> dict[str, object]:
     """Make unavailable API links explicit while preserving strict closure.
 
     Verso intentionally renders source modules beyond a project's public
@@ -284,17 +292,24 @@ def reconcile_documentation_links(site_root: Path) -> dict[str, object]:
     pair is downgraded only when its API target is absent *and* its adjacent
     Verso target exists.  Every other missing link remains untouched so the
     subsequent strict verifier still fails closed.
+
+    An operator may additionally supply source URLs verified against pinned Git
+    objects, mapped to their immutable commit URLs. Only adjacent generated
+    API/Lean-source pairs with matching module names use that fallback. No API
+    placeholder page is fabricated, and ordinary broken links are not waived.
     """
 
     base_path = _site_base_path()
     occurrences: dict[tuple[str, str], list[str]] = defaultdict(list)
     replacement_count = 0
+    source_occurrences: dict[tuple[str, str], list[str]] = defaultdict(list)
 
     for document in sorted(site_root.rglob("*.html")):
         if document.is_symlink() or not document.is_file():
             continue
         source = document.read_text(encoding="utf-8", errors="replace")
-        if "Documentation" not in source or "Verso" not in source:
+        if not (("Documentation" in source and "Verso" in source) or
+                (verified_source_links and "API documentation" in source)):
             continue
 
         relative_document = document.relative_to(site_root).as_posix()
@@ -339,6 +354,29 @@ def reconcile_documentation_links(site_root: Path) -> dict[str, object]:
             )
 
         rendered = _DOCUMENTATION_PAIR_RE.sub(replace, source)
+        def replace_source(match: re.Match[str]) -> str:
+            nonlocal replacement_count
+            if "docs" in document.relative_to(site_root).parts:
+                return match.group(0)
+            docs_href = _anchor_href(match.group("documentation"))
+            source_href = _anchor_href(match.group("source"))
+            pinned = (verified_source_links or {}).get(source_href or "")
+            if not docs_href or not pinned or not re.fullmatch(
+                r"https://github[.]com/[^/]+/[^/]+/blob/[0-9a-f]{40}/[^?#]+[.]lean", pinned
+            ):
+                return match.group(0)
+            target = _internal_link_target(site_root, document, docs_href, base_path=base_path)
+            if target is None or target.is_file() or target.stem != Path(urlsplit(pinned).path).stem:
+                return match.group(0)
+            replacement_count += 1
+            source_occurrences[(docs_href, pinned)].append(relative_document)
+            return ('<span class="documentation-unavailable" title="API documentation '
+                    'has not been generated for this item">API documentation unavailable</span>'
+                    + match.group("separator")
+                    + f'<a href="{html.escape(pinned, quote=True)}">Lean source</a>')
+
+        if verified_source_links:
+            rendered = _SOURCE_DOCUMENTATION_PAIR_RE.sub(replace_source, rendered)
         if rendered != source:
             temporary = document.with_name(f".{document.name}.tmp")
             temporary.write_text(rendered, encoding="utf-8")
@@ -360,6 +398,11 @@ def reconcile_documentation_links(site_root: Path) -> dict[str, object]:
         "replacement_count": replacement_count,
         "schema_version": 1,
     }
+    if verified_source_links:
+        manifest["policy"] = "missing-api-page-with-verified-reading-or-source-fallback"
+        entries.extend({"documentation_href": docs, "source_href": pinned,
+                        "source_pages": sorted(pages), "fallback_kind": "pinned-git-source"}
+                       for (docs, pinned), pages in sorted(source_occurrences.items()))
     (site_root / _UNAVAILABLE_DOCUMENTATION_MANIFEST).write_text(
         json.dumps(manifest, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",

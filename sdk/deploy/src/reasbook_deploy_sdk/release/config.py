@@ -117,8 +117,9 @@ def load_profile(path: str | Path, *, repo_root: str | Path) -> DeploymentProfil
     else:
         selection = _mapping(selection_value, field="selection")
     _expect_keys(selection, {"mode", "exclude"}, field="selection")
-    if selection.get("mode", "all_active") != "all_active":
-        raise DeployConfigError("selection.mode currently supports only all_active")
+    selection_mode = selection.get("mode", "all_active")
+    if selection_mode not in {"all_active", "canonical"}:
+        raise DeployConfigError("selection.mode must be all_active or canonical")
     raw_exclude = selection.get("exclude", [])
     if not isinstance(raw_exclude, list) or not all(
         isinstance(item, str) for item in raw_exclude
@@ -265,6 +266,7 @@ def load_profile(path: str | Path, *, repo_root: str | Path) -> DeploymentProfil
             workflow=str(publish_value.get("workflow", "publish_release_pages.yml")),
         ),
         exclude=tuple(sorted(set(raw_exclude))),
+        selection_mode=selection_mode,
         artifacts=artifacts,
     )
 
@@ -325,7 +327,7 @@ def dump_profile_snapshot(profile: DeploymentProfile) -> str:
         "registry": "toolchains.yml",
         "canonical_projects": "canonical-projects.yml",
         "selection": {
-            "mode": "all_active",
+            "mode": profile.selection_mode,
             "exclude": list(profile.exclude),
         },
         "site": {
